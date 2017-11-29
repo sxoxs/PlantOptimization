@@ -1,0 +1,10 @@
+logic\AntOptimization\Main.class
+logic\AntOptimization\AntColony.class
+logic\AntOptimization\Menu.class
+logic\AntOptimization\ParameterAntOptimization.class
+logic\AntOptimization\WriteIntoExcel.class
+logic\AntOptimization\Ant.class
+logic\AntOptimization\AntAlgoritm$DataOptimization.class
+logic\AntOptimization\AntMath.class
+logic\AntOptimization\AntAlgoritm.class
+logic\AntOptimization\WriteIntoExcel$ReadFromExcell.class
