@@ -1,21 +1,24 @@
 package logic.AntOptimization;
 
+import logic.parser.ExcelReader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class ParameterAntOptimization {
-    private static double averangDistant;
-    private static double degreeInfluencePheromone;
-    private static double degreeInfluenceDistance;
-    private static double evaporationPheromone;
-    private static double[][] arrayVisibilityColony;
-    private static double[][] arrayAmountPheromoneOnWay;
-    private static double[][] probabilitiTransitionInColony;
-    private static int maxCountEra;
+    private double averangDistant;
+    private double degreeInfluencePheromone;
+    private double degreeInfluenceDistance;
+    private double evaporationPheromone;
+    private double[][] arrayVisibilityColony;
+    private double[][] arrayAmountPheromoneOnWay;
+    private double[][] probabilitiTransitionInColony;
+    private int maxCountEra;
 
-    public static void createParameterAntOptimization(String fileName) throws IOException {
+
+    public void createParameterAntOptimization(String fileName, AntColony ac) throws IOException {
         switch (fileName) {
             case "":{
                 assingValueVariableFromConsole();
@@ -26,146 +29,146 @@ public class ParameterAntOptimization {
                 break;
             }
         }
-        assingLengthArray();
-        averangDistant = (2 * AntMath.summArray(AntColony.getDistanceBetweenColony())) / (AntColony.getCountColony() * (AntColony.getCountColony() - 1));
-        firstCalculationArray();
+        assingLengthArray(ac);
+        averangDistant = (2 * AntMath.summArray(ac.getDistanceBetweenColony())) / (ac.getCountColony() * (ac.getCountColony() - 1));
+        firstCalculationArray(ac);
         changeProbabityTransitionInColony();
     }
 
-    public static double getAverangDistant() {
+    public double getAverangDistant() {
         return averangDistant;
     }
 
-    public static void setAverangDistant(double averangDistant) {
-        ParameterAntOptimization.averangDistant = averangDistant;
+    public void setAverangDistant(double averangDistant) {
+        this.averangDistant = averangDistant;
     }
 
-    public static double getDegreeInfluencePheromone() {
+    public double getDegreeInfluencePheromone() {
         return degreeInfluencePheromone;
     }
 
-    public static void setDegreeInfluencePheromone(double degreeInfluencePheromone) {
-        ParameterAntOptimization.degreeInfluencePheromone = degreeInfluencePheromone;
+    public void setDegreeInfluencePheromone(double degreeInfluencePheromone) {
+        this.degreeInfluencePheromone = degreeInfluencePheromone;
     }
 
-    public static double getDegreeInfluenceDistance() {
+    public double getDegreeInfluenceDistance() {
         return degreeInfluenceDistance;
     }
 
-    public static void setDegreeInfluenceDistance(double degreeInfluenceDistance) {
-        ParameterAntOptimization.degreeInfluenceDistance = degreeInfluenceDistance;
+    public void setDegreeInfluenceDistance(double degreeInfluenceDistance) {
+        this.degreeInfluenceDistance = degreeInfluenceDistance;
     }
 
-    public static double getEvaporationPheromone() {
+    public double getEvaporationPheromone() {
         return evaporationPheromone;
     }
 
-    public static void setEvaporationPheromone(double evaporationPheromone) {
-        ParameterAntOptimization.evaporationPheromone = evaporationPheromone;
+    public void setEvaporationPheromone(double evaporationPheromone) {
+        this.evaporationPheromone = evaporationPheromone;
     }
 
-    public static double[][] getArrayVisibilityColony() {
+    public double[][] getArrayVisibilityColony() {
         return arrayVisibilityColony;
     }
 
-    public static void setArrayVisibilityColony(double[][] arrayVisibilityColony) {
-        ParameterAntOptimization.arrayVisibilityColony = arrayVisibilityColony;
+    public void setArrayVisibilityColony(double[][] arrayVisibilityColony) {
+        this.arrayVisibilityColony = arrayVisibilityColony;
     }
 
-    public static double[][] getArrayAmountPheromoneOnWay() {
+    public double[][] getArrayAmountPheromoneOnWay() {
         return arrayAmountPheromoneOnWay;
     }
 
-    public static void setArrayAmountPheromoneOnWay(double[][] arrayAmountPheromoneOnWay) {
-        ParameterAntOptimization.arrayAmountPheromoneOnWay = arrayAmountPheromoneOnWay;
+    public void setArrayAmountPheromoneOnWay(double[][] arrayAmountPheromoneOnWay) {
+        this.arrayAmountPheromoneOnWay = arrayAmountPheromoneOnWay;
     }
 
-    public static double[][] getProbabilitiTransitionInColony() {
+    public double[][] getProbabilitiTransitionInColony() {
         return probabilitiTransitionInColony;
     }
 
-    public static void setProbabilitiTransitionInColony(double[][] probabilitiTransitionInColony) {
-        ParameterAntOptimization.probabilitiTransitionInColony = probabilitiTransitionInColony;
+    public void setProbabilitiTransitionInColony(double[][] probabilitiTransitionInColony) {
+        this.probabilitiTransitionInColony = probabilitiTransitionInColony;
     }
 
-    public static int getMaxCountEra() {
+    public int getMaxCountEra() {
         return maxCountEra;
     }
 
-    public static void setMaxCountEra(int maxCountEra) {
-        ParameterAntOptimization.maxCountEra = maxCountEra;
+    public void setMaxCountEra(int maxCountEra) {
+        this.maxCountEra = maxCountEra;
     }
 
-    private static void assingLengthArray() {
-        arrayVisibilityColony = new double[AntColony.getDistanceBetweenColony().length][];
-        arrayAmountPheromoneOnWay = new double[AntColony.getDistanceBetweenColony().length][];
-        probabilitiTransitionInColony = new double[AntColony.getDistanceBetweenColony().length][];
-        for (int i = 0; i < AntColony.getDistanceBetweenColony().length; i++) {
-            arrayVisibilityColony[i] = new double[AntColony.getDistanceBetweenColony()[i].length];
-            arrayAmountPheromoneOnWay[i] = new double[AntColony.getDistanceBetweenColony()[i].length];
-            probabilitiTransitionInColony[i] = new double[AntColony.getDistanceBetweenColony()[i].length];
+    private void assingLengthArray(AntColony ac) {
+        this.arrayVisibilityColony = new double[ac.getDistanceBetweenColony().length][];
+        this.arrayAmountPheromoneOnWay = new double[ac.getDistanceBetweenColony().length][];
+        this.probabilitiTransitionInColony = new double[ac.getDistanceBetweenColony().length][];
+        for (int i = 0; i < ac.getDistanceBetweenColony().length; i++) {
+            this.arrayVisibilityColony[i] = new double[ac.getDistanceBetweenColony()[i].length];
+            this.arrayAmountPheromoneOnWay[i] = new double[ac.getDistanceBetweenColony()[i].length];
+            this.probabilitiTransitionInColony[i] = new double[ac.getDistanceBetweenColony()[i].length];
         }
     }
 
-    private static void firstCalculationArray(){
-        for(int i = 0; i < AntColony.getDistanceBetweenColony().length; i++) {
-            for (int j = 0; j < AntColony.getDistanceBetweenColony()[i].length; j++) {
+    private void firstCalculationArray(AntColony ac){
+        for(int i = 0; i < ac.getDistanceBetweenColony().length; i++) {
+            for (int j = 0; j < ac.getDistanceBetweenColony()[i].length; j++) {
                 if (i!=j) {
-                    arrayVisibilityColony[i][j] = averangDistant / AntColony.getDistanceBetweenColony()[i][j];
-                    arrayAmountPheromoneOnWay[i][j] = 1;
+                    this.arrayVisibilityColony[i][j] = averangDistant / ac.getDistanceBetweenColony()[i][j];
+                    this.arrayAmountPheromoneOnWay[i][j] = 1;
                 }
                 else {
-                    arrayVisibilityColony[i][j] = 0;
-                    arrayAmountPheromoneOnWay[i][j] = 0;
+                    this.arrayVisibilityColony[i][j] = 0;
+                    this.arrayAmountPheromoneOnWay[i][j] = 0;
                 }
             }
         }
     }
 
-    private static void assingValueVariableFromFile(String fileName) throws IOException {
-        degreeInfluenceDistance = WriteIntoExcel.ReadFromExcell.ReadValue(fileName +".xls", "Параметры алгоритма", 3, 1);
-        degreeInfluencePheromone = WriteIntoExcel.ReadFromExcell.ReadValue(fileName +".xls", "Параметры алгоритма", 4, 1);
-        evaporationPheromone = WriteIntoExcel.ReadFromExcell.ReadValue(fileName +".xls", "Параметры алгоритма", 5, 1);
-        maxCountEra = (int) WriteIntoExcel.ReadFromExcell.ReadValue(fileName +".xls", "Параметры алгоритма", 6, 1);
+    private void assingValueVariableFromFile(String fileName) throws IOException {
+        ExcelReader er = new ExcelReader();
+
+        this.degreeInfluenceDistance = er.ReadValue(fileName +".xls", "Параметры алгоритма", 3, 1);
+        this.degreeInfluencePheromone = er.ReadValue(fileName +".xls", "Параметры алгоритма", 4, 1);
+        this.evaporationPheromone = er.ReadValue(fileName +".xls", "Параметры алгоритма", 5, 1);
+        this.maxCountEra = (int) er.ReadValue(fileName +".xls", "Параметры алгоритма", 6, 1);
     }
 
-    private static void assingValueVariableFromConsole() throws IOException {
+    private void assingValueVariableFromConsole() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Введите коэфициент влияния феромона: ");
-        degreeInfluencePheromone = Double.parseDouble(br.readLine().trim());
+        this.degreeInfluencePheromone = Double.parseDouble(br.readLine().trim());
         System.out.println("Введите коэфициент влияния расстояния между муравейниками: ");
-        degreeInfluenceDistance = Double.parseDouble(br.readLine().trim());
+        this.degreeInfluenceDistance = Double.parseDouble(br.readLine().trim());
         System.out.println("Введите коэфициент учитывающий испарение феромона: ");
-        evaporationPheromone = Double.parseDouble(br.readLine().trim());
+        this.evaporationPheromone = Double.parseDouble(br.readLine().trim());
         System.out.println("Ведите количество эпох работы алгоритма");
-        maxCountEra = Integer.parseInt(br.readLine().trim());
+        this.maxCountEra = Integer.parseInt(br.readLine().trim());
     }
 
-    public static void changePferomoneOnWay(){
-        for(int i = 0; i < arrayAmountPheromoneOnWay.length; i++) {
-            for (int j = 0; j < arrayAmountPheromoneOnWay[i].length; j++) {
+    public void changePferomoneOnWay(AntColony ac){
+        for(int i = 0; i < this.arrayAmountPheromoneOnWay.length; i++) {
+            for (int j = 0; j < this.arrayAmountPheromoneOnWay[i].length; j++) {
                 if (i!=j) {
-                    arrayAmountPheromoneOnWay[i][j] =
-                            (evaporationPheromone * arrayAmountPheromoneOnWay[i][j] + ParameterAntOptimization.getAverangDistant() *
-                                    (AntColony.getCountColony()-1) * (1 - evaporationPheromone) * calculationSummReciprocalLengthWayGivenColony(i, j));
+                    this.arrayAmountPheromoneOnWay[i][j] =
+                            (this.evaporationPheromone * this.arrayAmountPheromoneOnWay[i][j] + this.averangDistant *
+                                    (ac.getCountColony()-1) * (1 - this.evaporationPheromone) * calculationSummReciprocalLengthWayGivenColony(i, j));
                 }
             }
         }
     }
 
-    public static void changeProbabityTransitionInColony() {
-        for (int i = 0; i < probabilitiTransitionInColony.length; i++) {
-            for (int j = 0; j < probabilitiTransitionInColony[i].length; j++) {
+    public void changeProbabityTransitionInColony() {
+        for (int i = 0; i < this.probabilitiTransitionInColony.length; i++) {
+            for (int j = 0; j < this.probabilitiTransitionInColony[i].length; j++) {
 
-                probabilitiTransitionInColony[i][j] = (Math.pow(arrayAmountPheromoneOnWay[i][j], degreeInfluencePheromone)
-                        * Math.pow(arrayVisibilityColony[i][j], degreeInfluenceDistance));
+                this.probabilitiTransitionInColony[i][j] = (Math.pow(this.arrayAmountPheromoneOnWay[i][j], this.degreeInfluencePheromone)
+                        * Math.pow(this.arrayVisibilityColony[i][j], this.degreeInfluenceDistance));
             }
         }
-        double summProbabity = AntMath.summArray(probabilitiTransitionInColony);
-
     }
 
-    private static double calculationSummReciprocalLengthWayGivenColony(int indexFirstColony, int indexSecondColony) {
+    private double calculationSummReciprocalLengthWayGivenColony(int indexFirstColony, int indexSecondColony) {
         double summReciprocalLength = 0;
 
         for (Ant ant : Ant.getAntList()) {
@@ -177,7 +180,7 @@ public class ParameterAntOptimization {
         return summReciprocalLength;
     }
 
-    private static boolean checkSequenceValuesInArray(int[] Array, int firstValue, int secondValue) {
+    private boolean checkSequenceValuesInArray(int[] Array, int firstValue, int secondValue) {
         boolean Result = false;
         int i = 0;
         do {

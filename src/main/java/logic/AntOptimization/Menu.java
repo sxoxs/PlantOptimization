@@ -1,81 +1,99 @@
 package logic.AntOptimization;
 
-import logic.AntOptimization.AntAlgoritm.DataOptimization;
+import logic.parser.ExcelWriter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public  class Menu {
     private static DataOptimization outData;
-    protected static String fileNameForLoad;
 
+    public  void runProgramm() throws IOException{
+        AntColony antColony = createAntColony();
+        ParameterAntOptimization param = createParameter(antColony);
 
-    public static void runProgramm() throws IOException{
+        AntAlgoritm antAlgoritm = new AntAlgoritm();
 
-        setParameter();
-        runAlgoritm();
-        saveToFile();
+        outData = antAlgoritm.Algoritm(param, antColony);
+        saveToFile(antColony);
 
     }
 
-    private static void setParameter() throws IOException{
+    private AntColony createAntColony() throws IOException {
+        AntColony ac = new AntColony();
+
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String AGRUMENT;
 
         System.out.println("Добро пожаловать в муравьиный алгоритм");
-        System.out.println("Загрузить предыдущие настройки?");
+        System.out.println("Загрузить предыдущие настройки колоний?");
         System.out.println("Да - Y / Нет - N");
 
-        if ( br.readLine().trim().toLowerCase().equals("y") ) {
+        String fileNameForLoad;
+
+        if ( sayYes(br.readLine()) ) {
             System.out.println("Введите название файла для загрузки настроек");
             fileNameForLoad = br.readLine().trim().toLowerCase();
-            AntColony.createAntColony(fileNameForLoad);
+            ac.createAntColony(fileNameForLoad);
         }
         else {
-            AntColony.createAntColony();
+            ac.createAntColony();
         }
+
+        return ac;
+    }
+
+
+    private ParameterAntOptimization createParameter(AntColony ac) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String fileNameForLoad;
 
         System.out.println("Загрузить предыдущие настройки алгоритма?");
         System.out.println("Да - Y / Нет - N");
 
         fileNameForLoad = "";
-        if ( br.readLine().trim().toLowerCase().equals("y") ) {
+        if ( sayYes(br.readLine()) ) {
             System.out.println("Введите название файла для загрузки настроек");
             fileNameForLoad = br.readLine().trim().toLowerCase();
         }
+
+        ParameterAntOptimization parametersAlgoritm = new ParameterAntOptimization();
+        parametersAlgoritm.createParameterAntOptimization(fileNameForLoad, ac);
+
+        return parametersAlgoritm;
     }
 
+    private void saveToFile(AntColony ac) throws IOException{
 
-    private static void  runAlgoritm() throws IOException {
-        ParameterAntOptimization.createParameterAntOptimization(fileNameForLoad);
-        outData = AntAlgoritm.Algoritm();
-    }
-
-    private static void saveToFile() throws IOException{
-
-        Date date = new Date();
-        date.getTime();
+        LocalDate localDate = LocalDate.now();
         System.out.println("Введите название файла для сохранения настроек");
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         StringBuffer sb = new StringBuffer(br.readLine().trim().toLowerCase());
         sb.append("_")
-                .append(Integer.toString(date.getDate()))
+                .append(Integer.toString(localDate.getDayOfMonth()))
                 .append('.')
-                .append(Integer.toString(date.getMonth()))
+                .append(Integer.toString(localDate.getMonth().getValue()))
                 .append('.')
-                .append( Integer.toString(date.getYear()))
-                .append("_")
-                .append(Integer.toString(date.getHours()))
-                .append(".")
-                .append(Integer.toString(date.getMinutes()));
+                .append( Integer.toString(localDate.getYear()));
 
-        WriteIntoExcel.setFileNameForSave(sb.toString());
+
+        ExcelWriter ew = new ExcelWriter();
+
+
+        ew.setFileNameForSave(sb.toString());
        // WriteIntoExcel.WriteEraLengthWay(outData.listOptimaWay, outData.listLengthOptimaWay);
-        WriteIntoExcel.SaveConficDistance();
-        WriteIntoExcel.SaveConfig(outData);
+        ew.SaveConficDistance(ac);
+        ew.SaveConfig(outData, ac);
+    }
+
+    private Boolean sayYes (String str) {
+        boolean resalt = str.trim().toLowerCase().equals("y");
+
+        return resalt;
     }
 }

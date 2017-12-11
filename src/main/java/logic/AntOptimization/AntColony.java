@@ -1,60 +1,63 @@
 package logic.AntOptimization;
 
+import logic.parser.ExcelReader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class AntColony {
-    private static int countColony;
-    private static int countAntsInOneColony;
-    private static double[][] distanceBetweenColony;
+    private int countColony;
+    private int countAntsInOneColony;
+    private double[][] distanceBetweenColony;
 
-    public static  void createAntColony() throws IOException {
+    public void createAntColony() throws IOException {
         assingValueVariableColonyFromConsole();
         setDistanceBetweenColony();
     }
 
-    public static  void createAntColony(String fileName) throws IOException {
+    public void createAntColony(String fileName) throws IOException {
+        ExcelReader er = new ExcelReader();
         fileName += ".xls";
-        countColony = (int) WriteIntoExcel.ReadFromExcell.ReadValue(fileName, "Параметры алгоритма", 1, 1);
-        countAntsInOneColony = (int) WriteIntoExcel.ReadFromExcell.ReadValue(fileName, "Параметры алгоритма", 2, 1);
-        distanceBetweenColony = new double[countColony][countColony];
-        distanceBetweenColony = WriteIntoExcel.ReadFromExcell.LoadDoubleArray(countColony, countColony, fileName);
+        this.countColony = (int) er.ReadValue(fileName, "Параметры алгоритма", 1, 1);
+        this.countAntsInOneColony = (int) er.ReadValue(fileName, "Параметры алгоритма", 2, 1);
+        this.distanceBetweenColony = new double[countColony][countColony];
+        this.distanceBetweenColony = er.LoadDoubleArray(countColony, countColony, fileName);
     }
 
-    public static double[][] getDistanceBetweenColony() {
-        return distanceBetweenColony;
-    }
-
-    public static void setDistanceBetweenColony(double[][] distanceBetweenColony) {
-        AntColony.distanceBetweenColony = distanceBetweenColony;
-    }
-
-    public static int getCountColony() {
+    public int getCountColony() {
         return countColony;
     }
 
-    public static void setCountColony(int countColony) {
-        countColony = countColony;
+    public void setCountColony(int countColony) {
+        this.countColony = countColony;
     }
 
-    public static int getCountAntsInOneColony() {
+    public int getCountAntsInOneColony() {
         return countAntsInOneColony;
     }
 
-    public static void setCountAntsInOneColony(int countAntsInOneColony) {
-        countAntsInOneColony = countAntsInOneColony;
+    public void setCountAntsInOneColony(int countAntsInOneColony) {
+        this.countAntsInOneColony = countAntsInOneColony;
     }
 
-    private static void assingValueVariableColonyFromConsole() throws IOException {
+    public double[][] getDistanceBetweenColony() {
+        return distanceBetweenColony;
+    }
+
+    public void setDistanceBetweenColony(double[][] distanceBetweenColony) {
+        this.distanceBetweenColony = distanceBetweenColony;
+    }
+
+    private void assingValueVariableColonyFromConsole() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Введите количество муравейников");
-        countColony = Integer.parseInt(br.readLine().trim());
+        this.countColony = Integer.parseInt(br.readLine().trim());
         System.out.println("Введите количество муравьёв в каждом муравейнике");
         countAntsInOneColony = Integer.parseInt(br.readLine().trim());
     }
 
-    private static void setDistanceBetweenColony() throws IOException {
+    private void setDistanceBetweenColony() throws IOException {
         System.out.println("Задать расстоянмя автоматически? Y/N ?");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -73,35 +76,35 @@ public class AntColony {
 
     }
 
-    private static void setCustomDistanceBetweenColony() throws IOException  {
+    private void setCustomDistanceBetweenColony() throws IOException  {
         System.out.println("В ручном вводе");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        distanceBetweenColony = new double[countColony][countColony];
-        for (int i = 0; i < countColony; i++) {
-            for (int j = 0; j < countColony; j++) {
+        this.distanceBetweenColony = new double[this.countColony][this.countColony];
+        for (int i = 0; i < this.countColony; i++) {
+            for (int j = 0; j < this.countColony; j++) {
                 if (i!=j) {
                     {
                         System.out.println("Введите расстояние между " + (i+1) + "-м и " + (j+1) + "-м муравейниками");
-                        distanceBetweenColony[i][j] = Double.parseDouble(br.readLine().trim());
+                        this.distanceBetweenColony[i][j] = Double.parseDouble(br.readLine().trim());
                     }
                 }
                 else {
-                    distanceBetweenColony[i][j] = 0;
+                    this.distanceBetweenColony[i][j] = 0;
                 }
             }
         }
     }
 
-    private static void setAutoDistanceBetweenColony() {
-        distanceBetweenColony = new double[countColony][countColony];
+    private void setAutoDistanceBetweenColony() {
+        this.distanceBetweenColony = new double[this.countColony][this.countColony];
         for (int i = 0; i < countColony; i++) {
             for (int j = 0; j < countColony; j++) {
                 if (i!=j) {
-                    distanceBetweenColony[i][j] = 1 +  Math.random() * 100;          // AntMath.roundTo2Decimal(AntMath.randomDouble(99.0));
+                    this.distanceBetweenColony[i][j] = 1 +  Math.random() * 100;          // AntMath.roundTo2Decimal(AntMath.randomDouble(99.0));
                 }
                 else {
-                    distanceBetweenColony[i][j] = 0;
+                    this.distanceBetweenColony[i][j] = 0;
                 }
             }
         }

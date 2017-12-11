@@ -6,118 +6,133 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class AntAlgoritm {
-    static DataOptimization dataOut;
 
-    public static DataOptimization Algoritm() throws IOException {
-        dataOut = new DataOptimization();
+    public DataOptimization Algoritm(ParameterAntOptimization algoritmParametrs, AntColony colony) throws IOException {
+        inizializeAnts(algoritmParametrs, colony);
 
-        inizializeAnts();
-        writeOptimaWay();
-        antColonyAlgorithm();
-        outInConsoleDataAntOptimization();
+        DataOptimization dataOut = new DataOptimization(algoritmParametrs, colony);
+
+        antColonyAlgorithm(algoritmParametrs, colony, dataOut);
+        outInConsoleDataAntOptimization(dataOut);
         System.gc();
 
         return dataOut;
     }
 
-    private static void inizializeAnts() {
-            for (int antsInOneColony = 0; antsInOneColony < AntColony.getCountAntsInOneColony(); antsInOneColony++){
-                for (int IndexFirstColonyInWay = 0; IndexFirstColonyInWay < AntColony.getCountColony(); IndexFirstColonyInWay++){
-                    Ant.addAnt(new Ant(IndexFirstColonyInWay));
+    private void inizializeAnts(ParameterAntOptimization antAlgoritmParam, AntColony ac) {
+            for (int antsInOneColony = 0; antsInOneColony < ac.getCountAntsInOneColony(); antsInOneColony++){
+                for (int IndexFirstColonyInWay = 0; IndexFirstColonyInWay < ac.getCountColony(); IndexFirstColonyInWay++){
+                    Ant.addAnt(new Ant(IndexFirstColonyInWay, antAlgoritmParam, ac));
                 }
             }
     }
 
-    private static void antColonyAlgorithm() throws IOException  {
+    private DataOptimization antColonyAlgorithm(ParameterAntOptimization parametrs, AntColony ac, DataOptimization inputData) throws IOException  {
+
+        int indexOptimalAnt = Ant.getIngexMinimalLengthWay(Ant.getAntList());
+        Double lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
+        Double lengthWayOptima = lengthWayCurrentOptima;
+
+        int[] currentOptimaWay = Ant.getAntList().get(indexOptimalAnt).getAntWay();
+        int[] optimaWay = Ant.getAntList().get(indexOptimalAnt).getAntWay();
+
+        ArrayList<Double> lengthWayList = new ArrayList<>();
+        ArrayList<int[]> wayList = new ArrayList<>();
+        lengthWayList.add(lengthWayCurrentOptima);
+        wayList.add(currentOptimaWay);
+
+        StringBuffer sb = new StringBuffer("");
+
         int CurrentEra = 1;
         int NotChangeMinWay = 0;
-        StringBuffer sb = new StringBuffer("");
-        int indexOptimalAnt = 0;
 
         Date date = new Date();
         long TimeWork = date.getTime();
 
         do {
+            parametrs.changePferomoneOnWay(ac);
+            parametrs.changeProbabityTransitionInColony();
+            for (int i = 0; i < Ant.getAntList().size(); Ant.getAntList().get(i++).changeWay(parametrs, ac) );
+
+            indexOptimalAnt = Ant.getIngexMinimalLengthWay(Ant.getAntList());
+            lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
+            currentOptimaWay = Ant.getAntList().get(indexOptimalAnt).getAntWay();
+
+            if (lengthWayOptima > lengthWayCurrentOptima) {
+
+                optimaWay = currentOptimaWay;
+                lengthWayOptima =  lengthWayCurrentOptima;
+            }
+
+            wayList.add( currentOptimaWay );
+            lengthWayList.add( lengthWayCurrentOptima );
+
+            if ( isChangeWay(lengthWayList) ) {
+                NotChangeMinWay++;
+            }
+            else {
+                NotChangeMinWay = 0;
+            }
+
             sb.delete( 0, sb.length() );
             sb.append("Эпоха № ")
                     .append(CurrentEra)
-                    .append(" ");
-
-            bodyAntColonyAlgorithm();
-
-            indexOptimalAnt = Ant.getIngexMinimalLengthWay(Ant.getAntList());
-
-            dataOut.listOptimaWay.add( Ant.getAntList().get(indexOptimalAnt).getAntWay() );
-            dataOut.listLengthOptimaWay.add( Ant.getAntList().get(indexOptimalAnt).getLengthWay() );
-
-            if (CurrentEra > 1){
-                if ( 0 == Double.compare(dataOut.listLengthOptimaWay.get(CurrentEra-2), dataOut.listLengthOptimaWay.get(CurrentEra-1)) ) {
-                    NotChangeMinWay++;
-                }
-                else { NotChangeMinWay = 0;}
-            }
-
-            sb.append(dataOut.listLengthOptimaWay.get(CurrentEra-1))
-                    .append(Arrays.toString(dataOut.listOptimaWay.get(CurrentEra-1)));
+                    .append(" ")
+                    .append(lengthWayCurrentOptima)
+                    .append(Arrays.toString(currentOptimaWay));
             System.out.println(sb);
 
-        } while ((++CurrentEra <= ParameterAntOptimization.getMaxCountEra())&(NotChangeMinWay < 5000));
+            // TODO: 06/12/17 change while for foo()
+        } while ((++CurrentEra <= parametrs.getMaxCountEra())&(NotChangeMinWay < 5000));
 
 
         Date date2 = new Date();
         TimeWork = TimeWork - date2.getTime();
-        dataOut.timeOptimization = TimeWork;
-        dataOut.eraOptimization = --CurrentEra;
         System.out.println("Алгоритм работал:  " + (TimeWork * (-1)) + " мс");
-        System.out.println("Эпох пройдено : " + CurrentEra);
-        if (NotChangeMinWay == 5000){
+        System.out.println("Эпох пройдено : " + --CurrentEra);
+        if (5000 == NotChangeMinWay){
             System.out.println("На протяжении 5000 эпох путь не улучшался, алгоритм закончен");
         }
         else{
             System.out.println("Домтигнут лимит эпох, алгоритм закончен");
         }
+
+        inputData.setOptimaWay(optimaWay);
+        inputData.setLengthOptimaWay(lengthWayOptima);
+
+        return inputData;
     }
 
-    private static void bodyAntColonyAlgorithm() {
-        ParameterAntOptimization.changePferomoneOnWay();
-        ParameterAntOptimization.changeProbabityTransitionInColony();
-        for (int i = 0; i < Ant.getAntList().size(); Ant.getAntList().get(i++).changeWay() );
-        changeOptimaWay();
-    }
-
-    private static void changeOptimaWay(){
-        if (dataOut.lengthOptimaWay > Ant.getAntList().get(Ant.getIngexMinimalLengthWay(Ant.getAntList())).getLengthWay()) {
-            writeOptimaWay();
+private static Boolean isChangeWay(ArrayList<Double> list) {
+        if ( 0 == Double.compare( list.get(list.size()-2), list.get(list.size()-1) ) ){
+            return true;
         }
-    }
+        else {
+            return false;
+        }
+}
 
-    private static void writeOptimaWay(){
-        int minWayIndex = Ant.getIngexMinimalLengthWay(Ant.getAntList());
-        dataOut.optimaWay = Ant.getAntList().get(minWayIndex).getAntWay();
-        dataOut.lengthOptimaWay =  Ant.getAntList().get(minWayIndex).getLengthWay();
-    }
-
-    private static void outInConsoleDataAntOptimization() throws IOException {
+    private static void outInConsoleDataAntOptimization(DataOptimization dataOut) throws IOException {
         System.out.println();
         System.out.println("Вывод");
-        System.out.println("Количество муравейников равно");
-        System.out.println(AntColony.getCountColony());
-        System.out.println("Количество муравьёв в каждом муравейнике равно: ");
-        System.out.println(AntColony.getCountAntsInOneColony());
+//        System.out.println("Количество муравейников равно");
+//        System.out.println(AntColony.getCountColony());
+//        System.out.println("Количество муравьёв в каждом муравейнике равно: ");
+//        System.out.println(AntColony.getCountAntsInOneColony());
 
 //        System.out.println("Матрица расстояний между муравейниками равна: ");
 //        System.out.println(Arrays.toString(AntColony.getDistanceBetweenColony()));
 
-        System.out.println();
-        System.out.println("Параметры алгоритма:");
-        System.out.println("Коэфициент влияния феромона: ");
-        System.out.println( ParameterAntOptimization.getDegreeInfluencePheromone());
-        System.out.println("Коэфициент влияния расстояния между муравейниками");
-        System.out.println(ParameterAntOptimization.getDegreeInfluenceDistance());
-        System.out.println("Коэфициент учитывающий испарение феромона:");
-        System.out.println( ParameterAntOptimization.getEvaporationPheromone());
-        System.out.println();
-        System.out.println("Переменные алгоритма:");
+//        System.out.println();
+//        System.out.println("Параметры алгоритма:");
+//        System.out.println("Коэфициент влияния феромона: ");
+//        System.out.println( ParameterAntOptimization.getDegreeInfluencePheromone());
+//        System.out.println("Коэфициент влияния расстояния между муравейниками");
+//        System.out.println(ParameterAntOptimization.getDegreeInfluenceDistance());
+//        System.out.println("Коэфициент учитывающий испарение феромона:");
+//        System.out.println( ParameterAntOptimization.getEvaporationPheromone());
+//        System.out.println();
+//        System.out.println("Переменные алгоритма:");
 //        System.out.println("Среднее расстояние между муравейниками равно: ");
 //        System.out.println( ParameterAntOptimization.getAverangDistant() );
 //        System.out.println("Параметр видимости муравейника: ");
@@ -133,44 +148,15 @@ public class AntAlgoritm {
 
         System.out.println();
         System.out.println("Лучший путь за все эпохи: ");
-        System.out.println(Arrays.toString(dataOut.optimaWay));
+        System.out.println(Arrays.toString(dataOut.getOptimaWay()));
 
         System.out.print("Длина оптимального пути за все эпохи: ");
-        System.out.println(dataOut.lengthOptimaWay);
+        System.out.println(dataOut.getLengthOptimaWay());
 
 //        System.out.println("Матрица путей по эпохам: ");
-//        System.out.println(Arrays.toString(dataOut.listLengthOptimaWay.toArray()));
+//        System.out.println(Arrays.toString(dataOut.lengthOptimaWayList.toArray()));
     }
 
-    public static class DataOptimization {
-        int countColony;
-        int countAntInOneColony;
-        int countAnts;
-        double lengthOptimaWay;
-        int maxCountEra;
-        double degreeInfluencePheromone;
-        double degreeInfluenceDistance;
-        double evaporationPheromone;
-        int[] optimaWay;
-        ArrayList<Double> listLengthOptimaWay = new ArrayList<>();
-        ArrayList<int[]> listOptimaWay = new ArrayList<>();
-
-        long timeOptimization;
-        int eraOptimization;
-
-        DataOptimization() {
-            countColony = AntColony.getCountColony();
-            countAntInOneColony = AntColony.getCountAntsInOneColony();
-            countAnts = countColony * countAntInOneColony;
-            lengthOptimaWay = 0;
-            maxCountEra = ParameterAntOptimization.getMaxCountEra() ;
-            degreeInfluencePheromone =  ParameterAntOptimization.getDegreeInfluencePheromone() ;
-            degreeInfluenceDistance =  ParameterAntOptimization.getDegreeInfluenceDistance() ;
-            evaporationPheromone = ParameterAntOptimization.getEvaporationPheromone() ;
-            optimaWay = new int[countColony];
-        }
-
-    }
 
 
 }
