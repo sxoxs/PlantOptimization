@@ -2,22 +2,35 @@ package logic.AntOptimization;
 
 import logic.parser.ExcelReader;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+@XmlRootElement(name="parameterAntOptimization")
+@XmlAccessorType(XmlAccessType.FIELD)
 
 public class ParameterAntOptimization {
+    @XmlElement(name = "averangDistant")
     private double averangDistant;
+    @XmlElement(name = "degreeInfluencePheromone")
     private double degreeInfluencePheromone;
+    @XmlElement(name = "degreeInfluenceDistance")
     private double degreeInfluenceDistance;
+    @XmlElement(name = "evaporationPheromone")
     private double evaporationPheromone;
+    @XmlElement(name = "arrayVisibilityColony")
     private double[][] arrayVisibilityColony;
+    @XmlElement(name = "arrayAmountPheromoneOnWay")
     private double[][] arrayAmountPheromoneOnWay;
+    @XmlElement(name = "probabilitiTransitionInColony")
     private double[][] probabilitiTransitionInColony;
+    @XmlElement(name = "maxCountEra")
     private int maxCountEra;
 
-
+    // TODO: 13/12/17 replace
     public void createParameterAntOptimization(String fileName, AntColony ac) throws IOException {
         switch (fileName) {
             case "":{
@@ -125,6 +138,7 @@ public class ParameterAntOptimization {
         }
     }
 
+    // TODO: 13/12/17  
     private void assingValueVariableFromFile(String fileName) throws IOException {
         ExcelReader er = new ExcelReader();
 

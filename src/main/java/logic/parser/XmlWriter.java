@@ -1,68 +1,41 @@
 package logic.parser;
 
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import logic.AntOptimization.AntColony;
+import logic.AntOptimization.ParameterAntOptimization;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import java.io.IOException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
 
 public class XmlWriter {
 
-    public void write(String fileName) {
+    public void write (ParameterAntOptimization param, AntColony colony, String fileName) {
+
         try {
-            // Создается построитель документа
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            // Создается дерево DOM документа из файла
-            Document document = documentBuilder.parse(fileName);
+            File file = new File(fileName + "_parameter.xml");
+            JAXBContext jaxbContext= JAXBContext.newInstance(ParameterAntOptimization.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            // output pretty printed
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-            // Вызываем метод для добавления новой книги
-            addNewBook(document);
+            marshaller.marshal(param, file);
 
-        } catch (ParserConfigurationException ex) {
-            ex.printStackTrace(System.out);
-        } catch (SAXException ex) {
-            ex.printStackTrace(System.out);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
+            file = new File(fileName + "_colony.xml");
+
+            jaxbContext = JAXBContext.newInstance(AntColony.class);
+            marshaller = jaxbContext.createMarshaller();
+
+            // output pretty printed
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            marshaller.marshal(colony, file);
+
         }
+        catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    private static void addNewBook(Document document) throws TransformerFactoryConfigurationError, DOMException {
-        // Получаем корневой элемент
-        Node root = document.getDocumentElement();
-
-        Element parametrs = document.createElement("AntParametrs");
-
-
-
-
-
-        // Создаем новую книгу по элементам
-        // Сама книга <Book>
-        Element book = document.createElement("AntParameters");
-        // <Title>
-        Element title = document.createElement("Title");
-        // Устанавливаем значение текста внутри тега
-        title.setTextContent("Incredible book about Java");
-
-
-        // Добавляем внутренние элементы книги в элемент <Book>
-//        book.appendChild(title);
-//        book.appendChild(author);
-//        book.appendChild(date);
-//        book.appendChild(isbn);
-//        book.appendChild(publisher);
-//        book.appendChild(cost);
-//        // Добавляем книгу в корневой элемент
-//        root.appendChild(book);
-//
-//        // Записываем XML в файл
-//        writeDocument(document);
-    }
 }

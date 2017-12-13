@@ -2,13 +2,23 @@ package logic.AntOptimization;
 
 import logic.parser.ExcelReader;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+@XmlRootElement(name="parameterAntOptimization")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class AntColony {
+
+    @XmlElement(name = "countColony")
     private int countColony;
+    @XmlElement(name = "countAntsInOneColony")
     private int countAntsInOneColony;
+    @XmlElement(name = "distanceBetweenColony")
     private double[][] distanceBetweenColony;
 
     public void createAntColony() throws IOException {

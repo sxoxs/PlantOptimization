@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class AntAlgoritm {
 
-    public DataOptimization Algoritm(ParameterAntOptimization algoritmParametrs, AntColony colony) throws IOException {
+    public DataOptimization algoritm(ParameterAntOptimization algoritmParametrs, AntColony colony) throws IOException {
         inizializeAnts(algoritmParametrs, colony);
 
         DataOptimization dataOut = new DataOptimization(algoritmParametrs, colony);
