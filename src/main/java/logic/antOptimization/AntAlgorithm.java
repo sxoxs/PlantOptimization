@@ -1,18 +1,18 @@
-package logic.AntOptimization;
+package logic.antOptimization;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-public class AntAlgoritm {
+public class AntAlgorithm {
 
-    public DataOptimization algoritm(ParameterAntOptimization algoritmParametrs, AntColony colony) throws IOException {
+    public DataOptimization algorithm(ParameterAntOptimization algoritmParametrs, AntColony colony) throws IOException {
         inizializeAnts(algoritmParametrs, colony);
 
         DataOptimization dataOut = new DataOptimization(algoritmParametrs, colony);
 
-        antColonyAlgorithm(algoritmParametrs, colony, dataOut);
+        runAntAlgorithm(algoritmParametrs, colony, dataOut);
         outInConsoleDataAntOptimization(dataOut);
         System.gc();
 
@@ -27,7 +27,7 @@ public class AntAlgoritm {
             }
     }
 
-    private DataOptimization antColonyAlgorithm(ParameterAntOptimization parametrs, AntColony ac, DataOptimization inputData) throws IOException  {
+    private DataOptimization runAntAlgorithm(ParameterAntOptimization parametrs, AntColony ac, DataOptimization inputData) throws IOException  {
 
         int indexOptimalAnt = Ant.getIngexMinimalLengthWay(Ant.getAntList());
         Double lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
@@ -47,7 +47,7 @@ public class AntAlgoritm {
         int NotChangeMinWay = 0;
 
         Date date = new Date();
-        long TimeWork = date.getTime();
+        long timeOptimization = date.getTime();
 
         do {
             parametrs.changePferomoneOnWay(ac);
@@ -87,8 +87,8 @@ public class AntAlgoritm {
 
 
         Date date2 = new Date();
-        TimeWork = TimeWork - date2.getTime();
-        System.out.println("Алгоритм работал:  " + (TimeWork * (-1)) + " мс");
+        timeOptimization -= date2.getTime();
+        System.out.println("Алгоритм работал:  " + (timeOptimization * (-1)) + " мс");
         System.out.println("Эпох пройдено : " + --CurrentEra);
         if (5000 == NotChangeMinWay){
             System.out.println("На протяжении 5000 эпох путь не улучшался, алгоритм закончен");
@@ -99,6 +99,7 @@ public class AntAlgoritm {
 
         inputData.setOptimaWay(optimaWay);
         inputData.setLengthOptimaWay(lengthWayOptima);
+        inputData.setTimeOptimization(timeOptimization);
 
         return inputData;
     }

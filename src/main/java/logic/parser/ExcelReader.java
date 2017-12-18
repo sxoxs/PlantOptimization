@@ -1,38 +1,62 @@
 package logic.parser;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
 public class ExcelReader {
+    private String fileNameForLoad;
 
-        public double ReadValue(String fileName,String bookName, int i, int j) throws IOException {
-            double Result = 0;
-            HSSFWorkbook myExcelBook = new HSSFWorkbook(new FileInputStream(fileName));
-            HSSFSheet myExcelSheet = myExcelBook.getSheet(bookName);
-            HSSFRow row = myExcelSheet.getRow(i);
+    public double readValue(String bookName, int i, int j) throws IOException {
+        double result = 0;
+        XSSFWorkbook myExcelBook = new XSSFWorkbook(new FileInputStream(fileNameForLoad));
+        XSSFSheet myExcelSheet = myExcelBook.getSheet(bookName);
+        XSSFRow row = myExcelSheet.getRow(i);
 
-            {
-                Result = row.getCell(j).getNumericCellValue();
+        {
+            result = row.getCell(j).getNumericCellValue();
+        }
+        myExcelBook.close();
+        return result;
+    }
+
+    public  double[][] readDoubleArray(String bookName) throws IOException {
+        XSSFWorkbook myExcelBook = new XSSFWorkbook(new FileInputStream(fileNameForLoad));
+        XSSFSheet myExcelSheet = myExcelBook.getSheet(bookName);
+        XSSFRow row = myExcelSheet.getRow(0);
+
+        int lengthI = row.getLastCellNum();
+        int lengthJ = 0;
+// TODO: 18/12/17 проверить обязательно
+        for (;;){
+            if (null != row.getCell(lengthI+1)) {
+                lengthJ++;
             }
-            myExcelBook.close();
-            return Result;
+            else break;
         }
 
-        public  double[][] LoadDoubleArray(int lengthI, int lengthJ, String fileNameForLoad) throws IOException {
-            double[][] Result = new double[lengthI][];
-            for (int i = 0; i < lengthI; i++) {
-                Result[i] = new double[lengthJ];
-                for (int j = 0; j < lengthJ; j++){
-                    Result[i][j] = ReadValue(fileNameForLoad, "Матрица путей между колониями", i, j);
-                }
+        double[][] result = new double[lengthI][];
+
+        for (int i = 0; i < lengthI ; i++) {
+            result[i] = new double[lengthJ];
+
+            row = myExcelSheet.getRow(i);
+            for (int j = 0; j < lengthJ; j++){
+                result[i][j] = row.getCell(j).getNumericCellValue();
             }
-            return Result;
         }
 
+        return result;
+    }
 
+    public String getFileNameForLoad() {
+        return fileNameForLoad;
+    }
 
+    public void setFileNameForLoad(String fileNameForLoad) {
+        this.fileNameForLoad = fileNameForLoad;
+    }
 }

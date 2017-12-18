@@ -1,8 +1,12 @@
-E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\Excel.java
+E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\parser\ExcelReader.java
 E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\AntAlgoritm.java
+E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\parser\XmlWriter.java
+E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\parser\XmlReader.java
 E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\Main.java
 E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\Menu.java
 E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\Ant.java
 E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\ParameterAntOptimization.java
+E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\parser\ExcelWriter.java
 E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\AntMath.java
+E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\DataOptimization.java
 E:\файлы\лабы\java\Intellij\PlantOptimization\src\main\java\logic\AntOptimization\AntColony.java
