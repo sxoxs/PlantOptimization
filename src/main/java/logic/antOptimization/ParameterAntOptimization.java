@@ -1,6 +1,4 @@
-package logic.AntOptimization;
-
-import logic.parser.ExcelReader;
+package logic.antOptimization;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,18 +28,13 @@ public class ParameterAntOptimization {
     @XmlElement(name = "maxCountEra")
     private int maxCountEra;
 
-    // TODO: 13/12/17 replace
-    public void createParameterAntOptimization(String fileName, AntColony ac) throws IOException {
-        switch (fileName) {
-            case "":{
-                assingValueVariableFromConsole();
-                break;
-            }
-            default:{
-                assingValueVariableFromFile(fileName);
-                break;
-            }
-        }
+
+    ParameterAntOptimization(){
+
+    }
+
+    ParameterAntOptimization(AntColony ac) throws IOException {
+        assingValueVariableFromConsole();
         assingLengthArray(ac);
         averangDistant = (2 * AntMath.summArray(ac.getDistanceBetweenColony())) / (ac.getCountColony() * (ac.getCountColony() - 1));
         firstCalculationArray(ac);
@@ -136,16 +129,6 @@ public class ParameterAntOptimization {
                 }
             }
         }
-    }
-
-    // TODO: 13/12/17  
-    private void assingValueVariableFromFile(String fileName) throws IOException {
-        ExcelReader er = new ExcelReader();
-
-        this.degreeInfluenceDistance = er.ReadValue(fileName +".xls", "Параметры алгоритма", 3, 1);
-        this.degreeInfluencePheromone = er.ReadValue(fileName +".xls", "Параметры алгоритма", 4, 1);
-        this.evaporationPheromone = er.ReadValue(fileName +".xls", "Параметры алгоритма", 5, 1);
-        this.maxCountEra = (int) er.ReadValue(fileName +".xls", "Параметры алгоритма", 6, 1);
     }
 
     private void assingValueVariableFromConsole() throws IOException {

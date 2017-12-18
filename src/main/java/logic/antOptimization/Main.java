@@ -1,4 +1,4 @@
-package logic.AntOptimization;
+package logic.antOptimization;
 
 
 import java.io.IOException;

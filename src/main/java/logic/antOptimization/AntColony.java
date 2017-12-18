@@ -1,6 +1,4 @@
-package logic.AntOptimization;
-
-import logic.parser.ExcelReader;
+package logic.antOptimization;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,15 +22,6 @@ public class AntColony {
     public void createAntColony() throws IOException {
         assingValueVariableColonyFromConsole();
         setDistanceBetweenColony();
-    }
-
-    public void createAntColony(String fileName) throws IOException {
-        ExcelReader er = new ExcelReader();
-        fileName += ".xls";
-        this.countColony = (int) er.ReadValue(fileName, "Параметры алгоритма", 1, 1);
-        this.countAntsInOneColony = (int) er.ReadValue(fileName, "Параметры алгоритма", 2, 1);
-        this.distanceBetweenColony = new double[countColony][countColony];
-        this.distanceBetweenColony = er.LoadDoubleArray(countColony, countColony, fileName);
     }
 
     public int getCountColony() {

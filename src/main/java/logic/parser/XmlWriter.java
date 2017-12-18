@@ -1,7 +1,7 @@
 package logic.parser;
 
-import logic.AntOptimization.AntColony;
-import logic.AntOptimization.ParameterAntOptimization;
+import logic.antOptimization.AntColony;
+import logic.antOptimization.ParameterAntOptimization;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -13,6 +13,8 @@ public class XmlWriter {
     public void write (ParameterAntOptimization param, AntColony colony, String fileName) {
 
         try {
+            fileName = fileName.trim().toLowerCase();
+
             File file = new File(fileName + "_parameter.xml");
             JAXBContext jaxbContext= JAXBContext.newInstance(ParameterAntOptimization.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
