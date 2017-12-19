@@ -1,6 +1,10 @@
 package logic.antOptimization;
 
-import java.io.*;
+import logic.factory.FactoryParameter;
+import logic.factory.FactoryParameterCreater;
+import logic.factory.Schedule;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -97,6 +101,7 @@ public class AntAlgorithm {
             System.out.println("Домтигнут лимит эпох, алгоритм закончен");
         }
 
+
         inputData.setOptimaWay(optimaWay);
         inputData.setLengthOptimaWay(lengthWayOptima);
         inputData.setTimeOptimization(timeOptimization);
@@ -156,6 +161,10 @@ private static Boolean isChangeWay(ArrayList<Double> list) {
 
 //        System.out.println("Матрица путей по эпохам: ");
 //        System.out.println(Arrays.toString(dataOut.lengthOptimaWayList.toArray()));
+
+
+
+
     }
 
 

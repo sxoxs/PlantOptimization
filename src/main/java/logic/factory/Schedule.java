@@ -6,8 +6,14 @@ public class Schedule {
     private double[][] productTimeArray;
 
     public double calculationAllTime(FactoryParameter inFactory) {
-        double time = 0;
+
         getShedule(inFactory);
+        double time = productTimeArray[0][1];
+        for (int i = 1; i < productTimeArray.length; i++){
+            if (time < productTimeArray[i][1]) {
+                time = productTimeArray[i][1];
+            }
+        }
 
         return time;
     }
@@ -17,11 +23,12 @@ public class Schedule {
         inFactory.setSequenceProduct(seqProduct);
         getShedule(inFactory);
 
+        time = Math.abs(productTimeArray[1][0] - productTimeArray[0][1]);
+
         return time;
     }
 
     private void getShedule(FactoryParameter factory) {
-
 
         initializationArrays(factory);
         int productIndex = 0;
@@ -39,12 +46,12 @@ public class Schedule {
                 if (isFirstApparat) {
                     nowApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], apparat);
                     endTimeWorkApparatsArray[nowApparatIndex] += factory.getProductTimeReleaseArray()[nowProductIndex][nowApparatIndex];
-                    productTimeArray[nowProductIndex][0] = 0;
+                    productTimeArray[productIndex][0] = 0;
                     isFirstApparat = false;
                 }
                 else {
                     nowApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], apparat);
-                    lastApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], --apparat);
+                    lastApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], (apparat-1));
 
                     beginTimeWorkApparatsArray[nowApparatIndex] = endTimeWorkApparatsArray[lastApparatIndex];
                     endTimeWorkApparatsArray[nowApparatIndex] = beginTimeWorkApparatsArray[nowApparatIndex] + factory.getProductTimeReleaseArray()[nowProductIndex][nowApparatIndex];
@@ -52,12 +59,14 @@ public class Schedule {
                 }
             }
         }
-        productTimeArray[nowProductIndex][1] = endTimeWorkApparatsArray[nowApparatIndex];
+        productTimeArray[productIndex][1] = endTimeWorkApparatsArray[nowApparatIndex];
+
+        System.out.println("end product 0");
 
         double tempBeginTime = 0;
 
         productIndex++;
-        for (; productIndex < factory.productCount; productIndex++) {
+        for (; productIndex < factory.getSequenceProduct().length; productIndex++) {
 
             nowProductIndex = factory.getSequenceProduct()[productIndex];
             lastProductIndex = factory.getSequenceProduct()[productIndex - 1];
@@ -75,7 +84,7 @@ public class Schedule {
                         endTimeWorkApparatsArray[nowApparatIndex] = beginTimeWorkApparatsArray[nowApparatIndex] +
                                 factory.getProductTimeReleaseArray()[nowProductIndex][nowApparatIndex];
 
-                        productTimeArray[nowProductIndex][0] = beginTimeWorkApparatsArray[nowApparatIndex];
+                        productTimeArray[productIndex][0] = beginTimeWorkApparatsArray[nowApparatIndex];
                         isFirstApparat = false;
                     } else {
                         nowApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], apparat);
@@ -97,7 +106,8 @@ public class Schedule {
                 }
             }//apparat
 
-            productTimeArray[nowProductIndex][1] = endTimeWorkApparatsArray[nowApparatIndex];
+            System.out.println("end product " + nowProductIndex);
+            productTimeArray[productIndex][1] = endTimeWorkApparatsArray[nowApparatIndex];
 
         }//productIndex
 
@@ -112,7 +122,7 @@ public class Schedule {
             }
             index++;
         }
-        return --index;
+        return (index-1);
     }
 
     private void initializationArrays(FactoryParameter fp) {

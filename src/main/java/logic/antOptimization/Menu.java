@@ -102,10 +102,10 @@ public  class Menu {
         ExcelWriter ew = new ExcelWriter();
 
         ew.setFileNameForSave(sb.toString());
-        ew.WriteEraLengthWay(outData.getOptimaWayList(), outData.getLengthOptimaWayList());
-        ew.SaveConficDistance(ac);
-        ew.SaveConfig(outData, ac);
-        ew.paintLineChart(outData);
+        ew.writeEraLengthWay(outData.getOptimaWayList(), outData.getLengthOptimaWayList());
+        ew.saveConficDistance(ac);
+        ew.saveConfig(outData, ac);
+//        ew.paintLineChart(outData);
     }
 
     private Boolean sayYes (String str) {

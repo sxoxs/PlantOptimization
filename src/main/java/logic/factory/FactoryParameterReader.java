@@ -48,8 +48,8 @@ public class FactoryParameterReader {
 
         result = new int[countProduct][];
         for (int i = 0; i < countProduct; i++){
+            result[i] = new int[countApparat];
             for (int j = 0; j < countApparat; j++){
-                result[i] = new int[countApparat];
                 result[i][j] = (int) tempArray[i][j];
             }
         }

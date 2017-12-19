@@ -25,7 +25,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,11 +37,11 @@ public class ExcelWriter {
     private String fileNameForSave;
 
     public void setFileNameForSave(String fileNameForSave) {
-        this.fileNameForSave = fileNameForSave + ".xlsx";
+        this.fileNameForSave = fileNameForSave + ".xls";
     }
 
-    public void WriteEraLengthWay(ArrayList<int[]> listWay, ArrayList<Double> listLength) throws IOException {
-        CreateBook("DataOutOptimization");
+    public void writeEraLengthWay(ArrayList<int[]> listWay, ArrayList<Double> listLength) throws IOException {
+        createBook("DataOutOptimization");
 
         Workbook book = new HSSFWorkbook(new FileInputStream(this.fileNameForSave));
         Sheet sheet = book.getSheet("DataOutOptimization");
@@ -71,7 +70,7 @@ public class ExcelWriter {
 
     }
 
-    private void WriteArray(double[][] Array, String bookName) throws IOException {
+    private void writeArray(double[][] Array, String bookName) throws IOException {
         Workbook book = new HSSFWorkbook(new FileInputStream(this.fileNameForSave));
         Sheet sheet = book.getSheet(bookName);
         Row row;
@@ -87,18 +86,18 @@ public class ExcelWriter {
         book.close();
     }
 
-    public void SaveConficDistance(AntColony ac) throws IOException {
-        CreateBook("Матрица путей между колониями");
-        WriteArray(ac.getDistanceBetweenColony(), "Матрица путей между колониями");
+    public void saveConficDistance(AntColony ac) throws IOException {
+        createBook("Матрица путей между колониями");
+        writeArray(ac.getDistanceBetweenColony(), "Матрица путей между колониями");
     }
 
-    private void CreateFile() throws IOException {
+    private void createFile() throws IOException {
         Workbook book = new HSSFWorkbook();
         book.write(new FileOutputStream(this.fileNameForSave));
         book.close();
     }
 
-    private void CreateBook(String bookName) throws IOException {
+    public void createBook(String bookName) throws IOException {
         try {
 
             Workbook book = new HSSFWorkbook(new FileInputStream(this.fileNameForSave));
@@ -107,7 +106,7 @@ public class ExcelWriter {
             book.write(new FileOutputStream(this.fileNameForSave));
             book.close();
         } catch (FileNotFoundException e) {
-            CreateFile();
+            createFile();
             Workbook book = new HSSFWorkbook(new FileInputStream(this.fileNameForSave));
             Sheet sheet = book.createSheet(bookName);
             book.write(new FileOutputStream(this.fileNameForSave));
@@ -115,9 +114,9 @@ public class ExcelWriter {
         }
     }
 
-    public void SaveConfig(DataOptimization outData, AntColony ac) throws IOException {
+    public void saveConfig(DataOptimization outData, AntColony ac) throws IOException {
 
-        CreateBook("Параметры алгоритма");
+        createBook("Параметры алгоритма");
         getNameValueParameters("Count colony", ac.getCountColony());
         getNameValueParameters("Count Ants In One colony", ac.getCountAntsInOneColony());
         getNameValueParameters("Degree Influence Distance", outData.getDegreeInfluenceDistance());
@@ -158,30 +157,30 @@ public class ExcelWriter {
     }
 
 
-    public void paintLineChart(DataOptimization outData) {
-        try {
-            XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(this.fileNameForSave));
-            XSSFSheet sheet = wb.createSheet("linechart");
-            XSSFDrawing drawing = sheet.createDrawingPatriarch();
-            XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 5, 10, 15);
-
-            XSSFChart chart = drawing.createChart(anchor);
-
-
-
-
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-    }
+//    public void paintLineChart(DataOptimization outData) {
+//        try {
+//            XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(this.fileNameForSave));
+//            XSSFSheet sheet = wb.createSheet("linechart");
+//            XSSFDrawing drawing = sheet.createDrawingPatriarch();
+//            XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 5, 10, 15);
+//
+//            XSSFChart chart = drawing.createChart(anchor);
+//
+//
+//
+//
+//
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//
+//
+//
+//    }
 
 }

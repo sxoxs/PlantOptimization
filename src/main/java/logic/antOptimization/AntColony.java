@@ -1,5 +1,9 @@
 package logic.antOptimization;
 
+import logic.factory.FactoryParameter;
+import logic.factory.FactoryParameterCreater;
+import logic.factory.Schedule;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -21,7 +25,8 @@ public class AntColony {
 
     public void createAntColony() throws IOException {
         assingValueVariableColonyFromConsole();
-        setDistanceBetweenColony();
+//        setDistanceBetweenColony();
+        setDistansFromFactory();
     }
 
     public int getCountColony() {
@@ -101,6 +106,25 @@ public class AntColony {
             for (int j = 0; j < countColony; j++) {
                 if (i!=j) {
                     this.distanceBetweenColony[i][j] = 1 +  Math.random() * 100;          // AntMath.roundTo2Decimal(AntMath.randomDouble(99.0));
+                }
+                else {
+                    this.distanceBetweenColony[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    private void setDistansFromFactory () throws IOException {
+        FactoryParameterCreater fpc = new FactoryParameterCreater();
+        FactoryParameter fp = new FactoryParameter();
+        fp = fpc.changer(fp);
+        Schedule schedule = new Schedule();
+
+        this.distanceBetweenColony = new double[this.countColony][this.countColony];
+        for (int i = 0; i < countColony; i++) {
+            for (int j = 0; j < countColony; j++) {
+                if (i!=j) {
+                    this.distanceBetweenColony[i][j] = schedule.wayTimeCalculation(fp, i, j);
                 }
                 else {
                     this.distanceBetweenColony[i][j] = 0;
