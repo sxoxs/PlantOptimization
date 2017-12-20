@@ -61,8 +61,6 @@ public class Schedule {
         }
         productTimeArray[productIndex][1] = endTimeWorkApparatsArray[nowApparatIndex];
 
-        System.out.println("end product 0");
-
         double tempBeginTime = 0;
 
         productIndex++;
@@ -106,7 +104,6 @@ public class Schedule {
                 }
             }//apparat
 
-            System.out.println("end product " + nowProductIndex);
             productTimeArray[productIndex][1] = endTimeWorkApparatsArray[nowApparatIndex];
 
         }//productIndex

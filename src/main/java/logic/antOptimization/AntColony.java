@@ -12,21 +12,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-@XmlRootElement(name="parameterAntOptimization")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class AntColony {
 
-    @XmlElement(name = "countColony")
     private int countColony;
-    @XmlElement(name = "countAntsInOneColony")
     private int countAntsInOneColony;
-    @XmlElement(name = "distanceBetweenColony")
     private double[][] distanceBetweenColony;
 
-    public void createAntColony() throws IOException {
+    public void createAntColony(FactoryParameter fp) throws IOException {
         assingValueVariableColonyFromConsole();
+        this.countColony = fp.getProductCount();
 //        setDistanceBetweenColony();
-        setDistansFromFactory();
+        setDistansFromFactory(fp);
     }
 
     public int getCountColony() {
@@ -55,8 +51,6 @@ public class AntColony {
 
     private void assingValueVariableColonyFromConsole() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Введите количество муравейников");
-        this.countColony = Integer.parseInt(br.readLine().trim());
         System.out.println("Введите количество муравьёв в каждом муравейнике");
         countAntsInOneColony = Integer.parseInt(br.readLine().trim());
     }
@@ -114,10 +108,8 @@ public class AntColony {
         }
     }
 
-    private void setDistansFromFactory () throws IOException {
-        FactoryParameterCreater fpc = new FactoryParameterCreater();
-        FactoryParameter fp = new FactoryParameter();
-        fp = fpc.changer(fp);
+    private void setDistansFromFactory (FactoryParameter fp) throws IOException {
+
         Schedule schedule = new Schedule();
 
         this.distanceBetweenColony = new double[this.countColony][this.countColony];

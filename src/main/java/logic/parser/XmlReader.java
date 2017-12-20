@@ -1,6 +1,5 @@
 package logic.parser;
 
-import logic.antOptimization.AntColony;
 import logic.antOptimization.ParameterAntOptimization;
 
 import javax.xml.bind.JAXBContext;
@@ -25,22 +24,5 @@ public class XmlReader {
 
         return null;
     }
-
-    public AntColony colonyParse(String fileName) {
-        try {
-            fileName = fileName.trim().toLowerCase() + "_colony.xml";
-            File file = new File(fileName);
-            JAXBContext jaxbContext = JAXBContext.newInstance(AntColony.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-
-            return (AntColony) jaxbUnmarshaller.unmarshal(file);
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
 
 }

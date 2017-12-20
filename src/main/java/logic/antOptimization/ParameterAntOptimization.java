@@ -33,7 +33,7 @@ public class ParameterAntOptimization {
 
     }
 
-    ParameterAntOptimization(AntColony ac) throws IOException {
+    public ParameterAntOptimization(AntColony ac) throws IOException {
         assingValueVariableFromConsole();
         assingLengthArray(ac);
         averangDistant = (2 * AntMath.summArray(ac.getDistanceBetweenColony())) / (ac.getCountColony() * (ac.getCountColony() - 1));

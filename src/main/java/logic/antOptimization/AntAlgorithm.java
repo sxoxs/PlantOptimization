@@ -1,9 +1,5 @@
 package logic.antOptimization;
 
-import logic.factory.FactoryParameter;
-import logic.factory.FactoryParameterCreater;
-import logic.factory.Schedule;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,18 +48,21 @@ public class AntAlgorithm {
 
         Date date = new Date();
         long timeOptimization = date.getTime();
+        int countAnt = Ant.getAntList().size();
 
         do {
             parametrs.changePferomoneOnWay(ac);
             parametrs.changeProbabityTransitionInColony();
-            for (int i = 0; i < Ant.getAntList().size(); Ant.getAntList().get(i++).changeWay(parametrs, ac) );
+
+            for (int ant = 0; ant < countAnt; ant++){
+                Ant.getAntList().get(ant).changeWay(parametrs, ac);
+            }
 
             indexOptimalAnt = Ant.getIngexMinimalLengthWay(Ant.getAntList());
             lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
             currentOptimaWay = Ant.getAntList().get(indexOptimalAnt).getAntWay();
 
             if (lengthWayOptima > lengthWayCurrentOptima) {
-
                 optimaWay = currentOptimaWay;
                 lengthWayOptima =  lengthWayCurrentOptima;
             }
@@ -105,6 +104,8 @@ public class AntAlgorithm {
         inputData.setOptimaWay(optimaWay);
         inputData.setLengthOptimaWay(lengthWayOptima);
         inputData.setTimeOptimization(timeOptimization);
+        inputData.setLengthOptimaWayList(lengthWayList);
+        inputData.setOptimaWayList(wayList);
 
         return inputData;
     }

@@ -21,13 +21,12 @@ public class FactoryParameterReader {
         return changeoverList;
     }
 
-    public double[][] readProductTimeReleaseArray (String fileName, int countApparat, int countProduct) throws IOException{
+    public double[][] readProductTimeReleaseArray (String fileName) throws IOException{
         double[][] result;
 
         ExcelReader er = new ExcelReader();
         er.setFileNameForLoad(fileName);
         String bookNameForLoad = "время выпуска";
-
         result = er.readDoubleArray(bookNameForLoad);
 
         return result;
@@ -56,6 +55,5 @@ public class FactoryParameterReader {
 
         return result;
     }
-
 
 }

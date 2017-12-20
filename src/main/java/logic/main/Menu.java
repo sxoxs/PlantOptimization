@@ -1,5 +1,12 @@
-package logic.antOptimization;
+package logic.main;
 
+import logic.antOptimization.AntAlgorithm;
+import logic.antOptimization.AntColony;
+import logic.antOptimization.DataOptimization;
+import logic.antOptimization.ParameterAntOptimization;
+import logic.factory.FactoryParameter;
+import logic.factory.FactoryParameterCreater;
+import logic.factory.Schedule;
 import logic.parser.ExcelWriter;
 import logic.parser.XmlReader;
 import logic.parser.XmlWriter;
@@ -13,11 +20,26 @@ import java.time.LocalDate;
 public  class Menu {
 
     public  void runProgramm() throws IOException{
-        AntColony antColony = createAntColony();
+        FactoryParameterCreater fpc = new FactoryParameterCreater();
+        FactoryParameter fp = new FactoryParameter();
+        fp = fpc.changer(fp);
+
+        AntColony antColony = createAntColony(fp);
         ParameterAntOptimization param = setParameter(antColony);
 
         AntAlgorithm antAlgorithm = new AntAlgorithm();
         DataOptimization outData = antAlgorithm.algorithm(param, antColony);
+
+        TimeCalculation timeCalculation = new TimeCalculation();
+        timeCalculation.calculationTime(outData, fp);
+
+
+//        fp.setSequenceProduct(outData.getOptimaWay());
+//        Schedule schedule = new Schedule();
+//
+//        System.out.print("Рассчитанное время выпуска равно: ");
+//        System.out.println(schedule.calculationAllTime(fp));
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Cохранить результаты? y/n");
@@ -35,42 +57,22 @@ public  class Menu {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String fileName = br.readLine();
         XmlWriter xmlWriter = new XmlWriter();
-        xmlWriter.write(param, antColony, fileName);
+        xmlWriter.write(param, fileName);
     }
 
-    private AntColony createAntColony() throws IOException {
+    private AntColony createAntColony(FactoryParameter fp) throws IOException {
         AntColony ac = new AntColony();
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        System.out.println("Добро пожаловать в муравьиный алгоритм");
-        System.out.println("Загрузить предыдущие настройки колоний?");
-        System.out.println("Да - Y / Нет - N");
-
-        String fileNameForLoad;
-
-        if ( sayYes(br.readLine()) ) {
-            System.out.println("Введите название файла для загрузки настроек");
-            fileNameForLoad = br.readLine().trim().toLowerCase();
-            XmlReader xmlReader = new XmlReader();
-            ac = xmlReader.colonyParse(fileNameForLoad);
-        }
-        else {
-            ac.createAntColony();
-        }
+        ac.createAntColony(fp);
 
         return ac;
     }
-
 
     private ParameterAntOptimization setParameter(AntColony ac) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String fileNameForLoad;
 
-
         System.out.println("Загрузить предыдущие настройки алгоритма?");
         System.out.println("Да - Y / Нет - N");
-
 
         if ( sayYes(br.readLine()) ) {
             System.out.println("Введите название файла для загрузки настроек");
@@ -107,6 +109,7 @@ public  class Menu {
         ew.saveConfig(outData, ac);
 //        ew.paintLineChart(outData);
     }
+
 
     private Boolean sayYes (String str) {
         return str.trim().toLowerCase().equals("y");
