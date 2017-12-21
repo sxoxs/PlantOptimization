@@ -28,7 +28,7 @@ public class FactoryParameterCreater {
 
         factoryParameter.setChangeoverListArray(fpR.readChangeoverListArray(fileNameForLoad, countApparat));
         factoryParameter.setProductTimeReleaseArray(fpR.readProductTimeReleaseArray(fileNameForLoad));
-        factoryParameter.setApparatScheduleArray(fpR.apparatScheduleArray(fileNameForLoad));
+        factoryParameter.setApparatScheduleArray(fpR.readApparatScheduleArray(fileNameForLoad));
 
         return factoryParameter;
     }

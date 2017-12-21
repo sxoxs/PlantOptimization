@@ -8,10 +8,10 @@ public class Schedule {
     public double calculationAllTime(FactoryParameter inFactory) {
 
         getShedule(inFactory);
-        double time = productTimeArray[0][1];
-        for (int i = 1; i < productTimeArray.length; i++){
-            if (time < productTimeArray[i][1]) {
-                time = productTimeArray[i][1];
+        double time = endTimeWorkApparatsArray[0];
+        for (int i = 1; i < endTimeWorkApparatsArray.length; i++){
+            if (time < endTimeWorkApparatsArray[i]) {
+                time = endTimeWorkApparatsArray[i];
             }
         }
 
@@ -38,28 +38,48 @@ public class Schedule {
         int lastApparatIndex = 0;
         boolean isFirstApparat = true;
 
+        for (int i = 0; i < productTimeArray.length; i++){
+            productTimeArray[i][0] = 0;
+            productTimeArray[i][1] = 0;
+        }
+
+        for (int i = 0; i < factory.apparatCount; i++){
+            beginTimeWorkApparatsArray[i] = 0;
+            endTimeWorkApparatsArray[i] = 0;
+        }
+
 
         for (int apparat = 0; apparat < factory.apparatCount; apparat++){
             // TODO: 18/12/17 say yes 
             if (0 != (factory.getApparatScheduleArray()[nowProductIndex][apparat]) ){
 
                 if (isFirstApparat) {
-                    nowApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], apparat);
+                    nowApparatIndex = factory.getApparatScheduleArray()[nowProductIndex][apparat] - 1;
                     endTimeWorkApparatsArray[nowApparatIndex] += factory.getProductTimeReleaseArray()[nowProductIndex][nowApparatIndex];
                     productTimeArray[productIndex][0] = 0;
                     isFirstApparat = false;
+
+//                    System.out.println("продукт " + (nowProductIndex+1) + "начало: " + productTimeArray[productIndex][0]);
                 }
                 else {
-                    nowApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], apparat);
-                    lastApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], (apparat-1));
+
+                    nowApparatIndex = factory.getApparatScheduleArray()[nowProductIndex][apparat] - 1;
+                    lastApparatIndex = factory.getApparatScheduleArray()[nowProductIndex][(apparat-1)] - 1;
 
                     beginTimeWorkApparatsArray[nowApparatIndex] = endTimeWorkApparatsArray[lastApparatIndex];
                     endTimeWorkApparatsArray[nowApparatIndex] = beginTimeWorkApparatsArray[nowApparatIndex] + factory.getProductTimeReleaseArray()[nowProductIndex][nowApparatIndex];
 
                 }
+
+//                System.out.println("продукт" + (nowProductIndex+1) + " аппарат " + (nowApparatIndex+1) + ": " + beginTimeWorkApparatsArray[nowApparatIndex]);
+//                System.out.println("продукт" + (nowProductIndex+1) + " аппарат " + (nowApparatIndex+1) + ": " + endTimeWorkApparatsArray[nowApparatIndex]);
+
             }
         }
         productTimeArray[productIndex][1] = endTimeWorkApparatsArray[nowApparatIndex];
+
+
+//        System.out.println("продукт " + (nowProductIndex+1) + "конец : " + productTimeArray[productIndex][1]);
 
         double tempBeginTime = 0;
 
@@ -75,7 +95,7 @@ public class Schedule {
                 if (0 != (factory.getApparatScheduleArray()[nowProductIndex][apparat])) {
 
                     if (isFirstApparat) {
-                        nowApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], apparat);
+                        nowApparatIndex = factory.getApparatScheduleArray()[nowProductIndex][apparat] - 1;
                         beginTimeWorkApparatsArray[nowApparatIndex] = endTimeWorkApparatsArray[nowApparatIndex] +
                                 factory.getChangeoverListArray().get(nowApparatIndex)[lastProductIndex][nowProductIndex];
 
@@ -84,9 +104,12 @@ public class Schedule {
 
                         productTimeArray[productIndex][0] = beginTimeWorkApparatsArray[nowApparatIndex];
                         isFirstApparat = false;
+
+//                        System.out.println("продукт " + (nowProductIndex+1) + "начало: " + productTimeArray[productIndex][0]);
+
                     } else {
-                        nowApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], apparat);
-                        lastApparatIndex = getIndex(factory.getApparatScheduleArray()[nowProductIndex], (apparat - 1));
+                        nowApparatIndex = factory.getApparatScheduleArray()[nowProductIndex][apparat] - 1;
+                        lastApparatIndex = factory.getApparatScheduleArray()[nowProductIndex][(apparat - 1)] - 1;
 
                         tempBeginTime = endTimeWorkApparatsArray[nowApparatIndex] +
                                 factory.getChangeoverListArray().get(nowApparatIndex)[lastProductIndex][nowProductIndex];
@@ -102,9 +125,17 @@ public class Schedule {
                                 factory.getProductTimeReleaseArray()[nowProductIndex][nowApparatIndex];
                     }
                 }
+
+//                System.out.println("продукт" + (nowProductIndex+1) + " аппарат " + (nowApparatIndex+1) + ": " + beginTimeWorkApparatsArray[nowApparatIndex]);
+//                System.out.println("продукт" + (nowProductIndex+1) + " аппарат " + (nowApparatIndex+1) + ": " + endTimeWorkApparatsArray[nowApparatIndex]);
+
+
             }//apparat
 
             productTimeArray[productIndex][1] = endTimeWorkApparatsArray[nowApparatIndex];
+
+
+//            System.out.println("продукт " + (nowProductIndex+1) + "конец : " + productTimeArray[productIndex][1]);
 
         }//productIndex
 

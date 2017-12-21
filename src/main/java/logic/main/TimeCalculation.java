@@ -40,6 +40,14 @@ public class TimeCalculation {
         System.out.print(Arrays.toString(wayMin));
         System.out.print("/; длинна: ");
         System.out.println(minTime);
+
+        System.out.print("34120: ");
+        wayMin = new int[]{3, 4, 1, 2, 0};
+        factoryParameter.setSequenceProduct(wayMin);
+
+        System.out.println(schedule.calculationAllTime(factoryParameter));
+
+
     }
 
     private ArrayList<int[]> getWayList (DataOptimization dataOptimization){

@@ -32,7 +32,7 @@ public class FactoryParameterReader {
         return result;
     }
 
-    public int[][] apparatScheduleArray (String fileName) throws IOException{
+    public int[][] readApparatScheduleArray(String fileName) throws IOException{
         int[][] result;
         int countApparat = 0;
         int countProduct = 0;
