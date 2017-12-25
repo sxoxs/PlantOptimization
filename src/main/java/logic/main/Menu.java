@@ -28,17 +28,7 @@ public  class Menu {
         ParameterAntOptimization param = setParameter(antColony);
 
         AntAlgorithm antAlgorithm = new AntAlgorithm();
-        DataOptimization outData = antAlgorithm.algorithm(param, antColony);
-
-        TimeCalculation timeCalculation = new TimeCalculation();
-        timeCalculation.calculationTime(outData, fp);
-
-
-//        fp.setSequenceProduct(outData.getOptimaWay());
-//        Schedule schedule = new Schedule();
-//
-//        System.out.print("Рассчитанное время выпуска равно: ");
-//        System.out.println(schedule.calculationAllTime(fp));
+        DataOptimization outData = antAlgorithm.algorithm(param, antColony, fp);
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 

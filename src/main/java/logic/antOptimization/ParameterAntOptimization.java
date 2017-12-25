@@ -1,5 +1,7 @@
 package logic.antOptimization;
 
+import logic.factory.Schedule;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -156,11 +158,22 @@ public class ParameterAntOptimization {
     }
 
     public void changeProbabityTransitionInColony() {
-        for (int i = 0; i < this.probabilitiTransitionInColony.length; i++) {
-            for (int j = 0; j < this.probabilitiTransitionInColony[i].length; j++) {
+        // TODO: 25/12/17 добавил переменную summTemp
+        double summTemp = 0;
 
+        for (int i = 0; i < this.probabilitiTransitionInColony.length; i++) {
+            for (int k = 0; k < this.probabilitiTransitionInColony.length; k++){
+               if (i != k) {
+                    summTemp += (Math.pow(this.arrayAmountPheromoneOnWay[i][k], this.degreeInfluencePheromone)
+                            * Math.pow(this.arrayVisibilityColony[i][k], this.degreeInfluenceDistance));
+                }
+            }
+
+            for (int j = 0; j < this.probabilitiTransitionInColony[i].length; j++) {
                 this.probabilitiTransitionInColony[i][j] = (Math.pow(this.arrayAmountPheromoneOnWay[i][j], this.degreeInfluencePheromone)
                         * Math.pow(this.arrayVisibilityColony[i][j], this.degreeInfluenceDistance));
+
+                this.probabilitiTransitionInColony[i][j] = this.probabilitiTransitionInColony[i][j] / summTemp;
             }
         }
     }
@@ -168,25 +181,27 @@ public class ParameterAntOptimization {
     private double calculationSummReciprocalLengthWayGivenColony(int indexFirstColony, int indexSecondColony) {
         double summReciprocalLength = 0;
 
+
         for (Ant ant : Ant.getAntList()) {
-            if (checkSequenceValuesInArray(ant.getAntWay(), indexFirstColony, indexSecondColony)) {
+            if (isSequenceValuesInArray(ant.getAntWay(), indexFirstColony, indexSecondColony)) {
                 summReciprocalLength += 1 / ant.getLengthWay();
             }
         }
 
+
+
         return summReciprocalLength;
     }
 
-    private boolean checkSequenceValuesInArray(int[] Array, int firstValue, int secondValue) {
-        boolean Result = false;
-        int i = 0;
-        do {
-            if((Array[i] == firstValue)&(Array[i+1] == secondValue)) {
-                Result = true;
+    private boolean isSequenceValuesInArray(int[] array, int firstValue, int secondValue) {
+        boolean result = false;
+        for (int i = 1; i < array.length-1; i++){
+            if((array[i] == firstValue)&(array[i+1] == secondValue)) {
+                result = true;
             }
-        } while ((!Result)&(++i < Array.length-1));
+        }
 
-        return Result;
+        return result;
     }
 
 }

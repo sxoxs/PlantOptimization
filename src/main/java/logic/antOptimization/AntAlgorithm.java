@@ -1,5 +1,8 @@
 package logic.antOptimization;
 
+import logic.factory.FactoryParameter;
+import logic.factory.Schedule;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,41 +10,40 @@ import java.util.Date;
 
 public class AntAlgorithm {
 
-    public DataOptimization algorithm(ParameterAntOptimization algoritmParametrs, AntColony colony) throws IOException {
-        inizializeAnts(algoritmParametrs, colony);
+    public DataOptimization algorithm(ParameterAntOptimization algoritmParametrs, AntColony colony, FactoryParameter factoryParameter) throws IOException {
+        inizializeAnts(algoritmParametrs, colony, factoryParameter);
 
         DataOptimization dataOut = new DataOptimization(algoritmParametrs, colony);
 
-        runAntAlgorithm(algoritmParametrs, colony, dataOut);
+        runAntAlgorithm(algoritmParametrs, colony, dataOut, factoryParameter);
         outInConsoleDataAntOptimization(dataOut);
         System.gc();
 
         return dataOut;
     }
 
-    private void inizializeAnts(ParameterAntOptimization antAlgoritmParam, AntColony ac) {
+    private void inizializeAnts(ParameterAntOptimization antAlgoritmParam, AntColony ac, FactoryParameter fParam) {
             for (int antsInOneColony = 0; antsInOneColony < ac.getCountAntsInOneColony(); antsInOneColony++){
                 for (int IndexFirstColonyInWay = 0; IndexFirstColonyInWay < ac.getCountColony(); IndexFirstColonyInWay++){
-                    Ant.addAnt(new Ant(IndexFirstColonyInWay, antAlgoritmParam, ac));
+                    Ant.addAnt(new Ant(IndexFirstColonyInWay, antAlgoritmParam, ac, fParam));
                 }
             }
     }
 
-    private DataOptimization runAntAlgorithm(ParameterAntOptimization parametrs, AntColony ac, DataOptimization inputData) throws IOException  {
+    private DataOptimization runAntAlgorithm(ParameterAntOptimization parametrs, AntColony ac, DataOptimization inputData, FactoryParameter fp) throws IOException  {
 
         int indexOptimalAnt = Ant.getIngexMinimalLengthWay(Ant.getAntList());
-        Double lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
-        Double lengthWayOptima = lengthWayCurrentOptima;
 
-        int[] currentOptimaWay = Ant.getAntList().get(indexOptimalAnt).getAntWay();
-        int[] optimaWay = Ant.getAntList().get(indexOptimalAnt).getAntWay();
+        double lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
+        double lengthWayOptima = lengthWayCurrentOptima;
 
-        ArrayList<Double> lengthWayList = new ArrayList<>();
-        ArrayList<int[]> wayList = new ArrayList<>();
-        lengthWayList.add(lengthWayCurrentOptima);
-        wayList.add(currentOptimaWay);
+        int[] currentOptimaWay = new int[ac.getCountColony()];
+        int[] optimaWay = new int[ac.getCountColony()];
 
-        StringBuffer sb = new StringBuffer("");
+        for (int i = 0; i < ac.getCountColony(); i++){
+            currentOptimaWay[i] = Ant.getAntList().get(indexOptimalAnt).getAntWay()[i];
+            optimaWay[i] = currentOptimaWay[i];
+        }
 
         int CurrentEra = 1;
         int NotChangeMinWay = 0;
@@ -55,37 +57,27 @@ public class AntAlgorithm {
             parametrs.changeProbabityTransitionInColony();
 
             for (int ant = 0; ant < countAnt; ant++){
-                Ant.getAntList().get(ant).changeWay(parametrs, ac);
+                Ant.getAntList().get(ant).changeWay(parametrs, ac, fp);
             }
 
             indexOptimalAnt = Ant.getIngexMinimalLengthWay(Ant.getAntList());
+
+            for (int i = 0; i < ac.getCountColony(); i++){
+                currentOptimaWay[i] = Ant.getAntList().get(indexOptimalAnt).getAntWay()[i];
+
+            }
             lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
-            currentOptimaWay = Ant.getAntList().get(indexOptimalAnt).getAntWay();
 
             if (lengthWayOptima > lengthWayCurrentOptima) {
-                optimaWay = currentOptimaWay;
                 lengthWayOptima =  lengthWayCurrentOptima;
+                for (int i = 0; i < ac.getCountColony(); i++){
+                    optimaWay[i] = currentOptimaWay[i];
+                    NotChangeMinWay = 0;
+                }
+
             }
+            NotChangeMinWay++;
 
-            wayList.add( currentOptimaWay );
-            lengthWayList.add( lengthWayCurrentOptima );
-
-            if ( isChangeWay(lengthWayList) ) {
-                NotChangeMinWay++;
-            }
-            else {
-                NotChangeMinWay = 0;
-            }
-
-            sb.delete( 0, sb.length() );
-            sb.append("Эпоха № ")
-                    .append(CurrentEra)
-                    .append(" ")
-                    .append(lengthWayCurrentOptima)
-                    .append(Arrays.toString(currentOptimaWay));
-            System.out.println(sb);
-
-            // TODO: 06/12/17 change while for foo()
         } while ((++CurrentEra <= parametrs.getMaxCountEra())&(NotChangeMinWay < 5000));
 
 
@@ -100,13 +92,9 @@ public class AntAlgorithm {
             System.out.println("Домтигнут лимит эпох, алгоритм закончен");
         }
 
-
         inputData.setOptimaWay(optimaWay);
         inputData.setLengthOptimaWay(lengthWayOptima);
         inputData.setTimeOptimization(timeOptimization);
-        inputData.setLengthOptimaWayList(lengthWayList);
-        inputData.setOptimaWayList(wayList);
-
         return inputData;
     }
 

@@ -22,8 +22,8 @@ public class Schedule {
         int[] seqProduct = {firstProduct, secondProduct};
         inFactory.setSequenceProduct(seqProduct);
         getShedule(inFactory);
-
-        time = Math.abs(productTimeArray[1][0] - productTimeArray[0][1]);
+        time = productTimeArray[1][1] - productTimeArray[0][1];
+//        time = productTimeArray[1][1];
 
         return time;
     }
