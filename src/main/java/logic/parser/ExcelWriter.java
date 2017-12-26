@@ -1,30 +1,10 @@
-/* ====================================================================
-   Licensed to the Apache Software Foundation (ASF) under one or more
-   contributor license agreements.  See the NOTICE file distributed with
-   this work for additional information regarding copyright ownership.
-   The ASF licenses this file to You under the Apache License, Version 2.0
-   (the "License"); you may not use this file except in compliance with
-   the License.  You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-==================================================================== */
-
 
 package logic.parser;
 
 import logic.antOptimization.AntColony;
 import logic.antOptimization.DataOptimization;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -115,25 +95,24 @@ public class ExcelWriter {
     }
 
     public void saveConfig(DataOptimization outData, AntColony ac) throws IOException {
-
         createBook("Параметры алгоритма");
-        getNameValueParameters("Count colony", ac.getCountColony());
-        getNameValueParameters("Count Ants In One colony", ac.getCountAntsInOneColony());
-        getNameValueParameters("Degree Influence Distance", outData.getDegreeInfluenceDistance());
-        getNameValueParameters("Degree Influence Pheromone", outData.getDegreeInfluencePheromone());
-        getNameValueParameters("Evaporation Pheromone", outData.getEvaporationPheromone());
-        getNameValueParameters("Count Era", outData.getMaxCountEra());
-        getNameValueParameters("Time", outData.getTimeOptimization());
+        writeValueParametersByName("Параметры алгоритма","Count colony", ac.getCountColony());
+        writeValueParametersByName("Параметры алгоритма","Count Ants In One colony", ac.getCountAntsInOneColony());
+        writeValueParametersByName("Параметры алгоритма","Degree Influence Distance", outData.getDegreeInfluenceDistance());
+        writeValueParametersByName("Параметры алгоритма","Degree Influence Pheromone", outData.getDegreeInfluencePheromone());
+        writeValueParametersByName("Параметры алгоритма","Evaporation Pheromone", outData.getEvaporationPheromone());
+        writeValueParametersByName("Параметры алгоритма","Count Era", outData.getMaxCountEra());
+        writeValueParametersByName("Параметры алгоритма","Time", outData.getTimeOptimization());
     }
 
-    private void getNameValueParameters(String cellname, double value) throws IOException {
+    public void writeValueParametersByName(String bookName, String cellName, double value) throws IOException {
         Workbook book = new HSSFWorkbook(new FileInputStream(this.fileNameForSave));
-        Sheet sheet = book.getSheet("Параметры алгоритма");
+        Sheet sheet = book.getSheet(bookName);
 
         Row row = sheet.createRow(sheet.getLastRowNum() + 1);
         Cell NameParametr = row.createCell(0);
         Cell ValueParametr = row.createCell(1);
-        NameParametr.setCellValue(cellname);
+        NameParametr.setCellValue(cellName);
         ValueParametr.setCellValue(value);
 
         sheet.autoSizeColumn(0);
@@ -141,14 +120,14 @@ public class ExcelWriter {
         book.close();
     }
 
-    private void getNameValueParameters(String name, int value) throws IOException {
+    public void writeValueParametersByName(String bookName, String cellName, int value) throws IOException {
         Workbook book = new HSSFWorkbook(new FileInputStream(this.fileNameForSave));
-        Sheet sheet = book.getSheet("Параметры алгоритма");
+        Sheet sheet = book.getSheet(bookName);
 
         Row row = sheet.createRow(sheet.getLastRowNum() + 1);
         Cell NameParametr = row.createCell(0);
         Cell ValueParametr = row.createCell(1);
-        NameParametr.setCellValue(name);
+        NameParametr.setCellValue(cellName);
         ValueParametr.setCellValue(value);
 
         sheet.autoSizeColumn(0);
@@ -156,31 +135,24 @@ public class ExcelWriter {
         book.close();
     }
 
+    public void setBorder(String bookName, int i, int j) throws IOException {
+        Workbook book = new HSSFWorkbook(new FileInputStream(this.fileNameForSave));
+        Sheet sheet = book.getSheet(bookName);
+        Row row;
+        CellStyle style = book.createCellStyle();
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
 
-//    public void paintLineChart(DataOptimization outData) {
-//        try {
-//            XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(this.fileNameForSave));
-//            XSSFSheet sheet = wb.createSheet("linechart");
-//            XSSFDrawing drawing = sheet.createDrawingPatriarch();
-//            XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 5, 10, 15);
-//
-//            XSSFChart chart = drawing.createChart(anchor);
-//
-//
-//
-//
-//
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//
-//
-//
-//    }
-
+        for (int ii = 0; ii < i; ii++) {
+            row = sheet.createRow(ii);
+            for (int jj = 0; jj < j; jj++) {
+                Cell Era = row.createCell(jj);
+                Era.setCellStyle(style);
+            }
+        }
+        book.write(new FileOutputStream(fileNameForSave));
+        book.close();
+    }
 }

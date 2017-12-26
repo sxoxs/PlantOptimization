@@ -36,13 +36,16 @@ public class FactoryParameterCreater {
     public void fileCreater (String fileName, int countApparat, int countProduct) throws IOException {
         ExcelWriter ew = new ExcelWriter();
         ew.setFileNameForSave(fileName);
-
-        ew.createBook("время выпуска");
-        ew.createBook("маршрут выпуска");
         ew.createBook("параметры");
-
+        ew.writeValueParametersByName("параметры","Количество продуктов", countProduct);
+        ew.writeValueParametersByName("параметры","Количество аппаратов", countApparat);
+        ew.createBook("время выпуска");
+        ew.setBorder("время выпуска", countProduct, countApparat);
+        ew.createBook("маршрут выпуска");
+        ew.setBorder("маршрут выпуска", countProduct, countApparat);
         for (int j = 0; j < countApparat; j++){
-            ew.createBook("аппарат_" + j);
+            ew.createBook("переналадка аппарата_" + j);
+            ew.setBorder("переналадка аппарата_" + j, countProduct, countProduct);
         }
     }
 
@@ -57,4 +60,6 @@ public class FactoryParameterCreater {
 
         return "1";
     }
+
+
 }

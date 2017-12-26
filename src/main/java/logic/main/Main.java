@@ -12,7 +12,7 @@ public class Main {
         System.out.println("Добро пожаловать в муравьиный алгоритм");
 
         Menu menu = new Menu();
-        menu.runProgramm();
+        menu.showMenu();
     }
 }
 

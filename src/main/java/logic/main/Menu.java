@@ -19,7 +19,52 @@ import java.time.LocalDate;
 
 public  class Menu {
 
-    public  void runProgramm() throws IOException{
+    public void showMenu() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuffer sb = new StringBuffer("Выберите:\n");
+        sb.append("1. Создать Excel файл для последующеговвода данных;\n")
+                .append("2. Начать рассчёт, используя подготовленный Excel файл;\n")
+                .append("3. Выход.");
+
+        String str = "";
+
+        for (;;) {
+            System.out.println(sb.toString());
+            str = br.readLine();
+
+            if (sayYes(str, "3")) {
+                System.out.println("Работа завершена.");
+                break;
+            }
+
+            switch (trimmer(str)){
+                case "1": {
+                    excelFileCreater();
+                    System.out.println("Файл создан, заполните и приступайте к расчёту.");
+                    break;
+                }
+                case "2": {
+                    runProgramm();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void excelFileCreater()throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Введите количество продуктов");
+        int productCount = Integer.parseInt(trimmer(br.readLine()));
+        System.out.println("Введите количество аппаратов");
+        int apparatCount = Integer.parseInt(trimmer(br.readLine()));
+        System.out.println("Введите название файла");
+        String fileName = trimmer(br.readLine());
+
+        FactoryParameterCreater fpc = new FactoryParameterCreater();
+        fpc.fileCreater(fileName, apparatCount, productCount);
+    }
+
+    private void runProgramm() throws IOException{
         FactoryParameterCreater fpc = new FactoryParameterCreater();
         FactoryParameter fp = new FactoryParameter();
         fp = fpc.changer(fp);
@@ -30,6 +75,10 @@ public  class Menu {
         AntAlgorithm antAlgorithm = new AntAlgorithm();
         DataOptimization outData = antAlgorithm.algorithm(param, antColony, fp);
 
+        saver(param, outData, antColony);
+    }
+
+    private void saver(ParameterAntOptimization param, DataOptimization outData, AntColony antColony) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Cохранить результаты? y/n");
@@ -45,7 +94,7 @@ public  class Menu {
     private void paramXmlSave(ParameterAntOptimization param, AntColony antColony) throws IOException {
         System.out.println("Введите название файла");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String fileName = br.readLine();
+        String fileName = trimmer(br.readLine());
         XmlWriter xmlWriter = new XmlWriter();
         xmlWriter.write(param, fileName);
     }
@@ -101,7 +150,23 @@ public  class Menu {
     }
 
 
-    private Boolean sayYes (String str) {
-        return str.trim().toLowerCase().equals("y");
+    private boolean sayYes (String str) {
+        return trimmer(str).equals("y");
+    }
+
+    private boolean sayYes (String strA, String strB){
+        return trimmer(strA).equals(trimmer(strB));
+    }
+
+    private String trimmer (String text) {
+        if (!text.isEmpty()) {
+            text.trim().toLowerCase();
+            return text;
+        }
+        else {
+            System.out.println("Значение отсутствует");
+        }
+
+        return "1";
     }
 }
