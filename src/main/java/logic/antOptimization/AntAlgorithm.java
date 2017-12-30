@@ -64,6 +64,9 @@ public class AntAlgorithm {
 
             lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
 
+            inputData.addOptimaWay(currentOptimaWay);
+            inputData.addLengthOptimaWay(lengthWayCurrentOptima);
+
             if (lengthWayOptima > lengthWayCurrentOptima) {
                 lengthWayOptima =  lengthWayCurrentOptima;
                 for (int i = 0; i < optimaWay.length; i++){

@@ -32,21 +32,20 @@ public  class Menu {
             System.out.println(sb.toString());
             str = br.readLine();
 
-            if (sayYes(str, "3")) {
-                System.out.println("Работа завершена.");
+            if (sayYes(str, "1")) {
+                excelFileCreater();
+                System.out.println("Файл создан, заполните и приступайте к расчёту.");
                 break;
             }
 
-            switch (trimmer(str)){
-                case "1": {
-                    excelFileCreater();
-                    System.out.println("Файл создан, заполните и приступайте к расчёту.");
-                    break;
-                }
-                case "2": {
-                    runProgramm();
-                    break;
-                }
+            if (sayYes(str, "2")) {
+                runProgramm();
+                break;
+            }
+
+            if (sayYes(str, "3")) {
+                System.out.println("Работа завершена.");
+                break;
             }
         }
     }

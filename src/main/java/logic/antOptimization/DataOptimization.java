@@ -42,7 +42,12 @@ public class DataOptimization {
     }
 
     public void addOptimaWay (int[] way) {
-        this.optimaWayList.add(way);
+        int[] newWay = new int[way.length];
+
+        for (int i = 0; i < way.length; i++){
+            newWay[i] = way[i];
+        }
+        this.optimaWayList.add(newWay);
     }
 
     public int getCountColony() {
