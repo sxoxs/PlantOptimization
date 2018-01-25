@@ -29,6 +29,8 @@ public class ParameterAntOptimization {
     private double[][] probabilitiTransitionInColony;
     @XmlElement(name = "maxCountEra")
     private int maxCountEra;
+    @XmlElement(name = "countAnt")
+    private int countAnt;
 
 
     ParameterAntOptimization(){
@@ -41,6 +43,14 @@ public class ParameterAntOptimization {
         averangDistant = (2 * AntMath.summArray(ac.getDistanceBetweenColony())) / (ac.getCountColony() * (ac.getCountColony() - 1));
         firstCalculationArray(ac);
         changeProbabityTransitionInColony();
+    }
+
+    public int getCountAnt() {
+        return countAnt;
+    }
+
+    public void setCountAnt(int countAnt) {
+        this.countAnt = countAnt;
     }
 
     public double getAverangDistant() {
@@ -135,6 +145,9 @@ public class ParameterAntOptimization {
 
     private void assingValueVariableFromConsole() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println("Введите количество муравьев: ");
+        this.countAnt = Integer.parseInt(br.readLine().trim());
         System.out.println("Введите коэфициент влияния феромона: ");
         this.degreeInfluencePheromone = Double.parseDouble(br.readLine().trim());
         System.out.println("Введите коэфициент влияния расстояния между муравейниками: ");
@@ -158,7 +171,6 @@ public class ParameterAntOptimization {
     }
 
     public void changeProbabityTransitionInColony() {
-        // TODO: 25/12/17 добавил переменную summTemp
         double summTemp = 0;
 
         for (int i = 0; i < this.probabilitiTransitionInColony.length; i++) {

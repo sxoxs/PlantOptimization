@@ -1,113 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <parameterAntOptimization>
-   <averangDistant>69.3</averangDistant>
-   <degreeInfluencePheromone>0.9</degreeInfluencePheromone>
-   <degreeInfluenceDistance>0.8</degreeInfluenceDistance>
-   <evaporationPheromone>0.6</evaporationPheromone>
+   <averangDistant>145.7</averangDistant>
+   <degreeInfluencePheromone>0.8</degreeInfluencePheromone>
+   <degreeInfluenceDistance>0.6</degreeInfluenceDistance>
+   <evaporationPheromone>0.5</evaporationPheromone>
    <arrayVisibilityColony>
       <item>0.0</item>
-      <item>2.038235294117647</item>
-      <item>1.3588235294117645</item>
-      <item>5.3307692307692305</item>
-      <item>1.98</item>
+      <item>1.7345238095238094</item>
+      <item>1.4425742574257425</item>
+      <item>2.3126984126984125</item>
+      <item>1.7141176470588233</item>
    </arrayVisibilityColony>
    <arrayVisibilityColony>
-      <item>1.3588235294117645</item>
+      <item>1.7554216867469878</item>
       <item>0.0</item>
-      <item>1.98</item>
-      <item>3.465</item>
-      <item>2.235483870967742</item>
+      <item>2.1746268656716414</item>
+      <item>2.8019230769230767</item>
+      <item>2.3126984126984125</item>
    </arrayVisibilityColony>
    <arrayVisibilityColony>
-      <item>1.872972972972973</item>
-      <item>3.15</item>
+      <item>1.6747126436781608</item>
+      <item>2.023611111111111</item>
       <item>0.0</item>
-      <item>3.0130434782608693</item>
-      <item>1.6902439024390243</item>
+      <item>1.995890410958904</item>
+      <item>1.601098901098901</item>
    </arrayVisibilityColony>
    <arrayVisibilityColony>
-      <item>1.54</item>
-      <item>1.98</item>
-      <item>1.2833333333333332</item>
+      <item>2.2075757575757575</item>
+      <item>2.601785714285714</item>
+      <item>1.9426666666666665</item>
       <item>0.0</item>
-      <item>1.98</item>
+      <item>2.601785714285714</item>
    </arrayVisibilityColony>
    <arrayVisibilityColony>
-      <item>1.3326923076923076</item>
-      <item>3.6473684210526316</item>
-      <item>1.8236842105263158</item>
-      <item>3.15</item>
+      <item>1.6188888888888888</item>
+      <item>2.5561403508771927</item>
+      <item>1.9171052631578946</item>
+      <item>2.4283333333333332</item>
       <item>0.0</item>
    </arrayVisibilityColony>
    <arrayAmountPheromoneOnWay>
       <item>0.0</item>
-      <item>0.870891584492614</item>
-      <item>1.1167947044119206</item>
-      <item>1.1271365708022356</item>
-      <item>2.037679579168283</item>
+      <item>0.0780081406697133</item>
+      <item>1.3958853239172504</item>
+      <item>0.23758054103264692</item>
+      <item>2.7323283030544845</item>
    </arrayAmountPheromoneOnWay>
    <arrayAmountPheromoneOnWay>
-      <item>1.0022570371304516</item>
+      <item>0.6159853938846993</item>
       <item>0.0</item>
-      <item>1.4783019439728238</item>
-      <item>1.8524891275362427</item>
-      <item>0.6143588096381452</item>
+      <item>3.6406352549280565</item>
+      <item>0.8450335664775341</item>
+      <item>1.5122500417937748</item>
    </arrayAmountPheromoneOnWay>
    <arrayAmountPheromoneOnWay>
-      <item>1.5229748836128487</item>
-      <item>0.6078014156958368</item>
+      <item>2.1229369626066963</item>
+      <item>1.2419380792674912</item>
       <item>0.0</item>
-      <item>2.3666360726457008</item>
-      <item>1.5045512381338615</item>
+      <item>0.5441375325434459</item>
+      <item>0.37665543754700737</item>
    </arrayAmountPheromoneOnWay>
    <arrayAmountPheromoneOnWay>
-      <item>1.3596128233136007</item>
-      <item>1.4741678493502892</item>
-      <item>0.723462680346247</item>
+      <item>1.7301271824984084</item>
+      <item>2.1173119768202078</item>
+      <item>1.8978054475708188</item>
       <item>0.0</item>
-      <item>2.7827337592546395</item>
+      <item>0.6037422272151264</item>
    </arrayAmountPheromoneOnWay>
    <arrayAmountPheromoneOnWay>
-      <item>0.946602745725239</item>
-      <item>2.666977096567922</item>
-      <item>2.569539824222316</item>
-      <item>1.6500387667047502</item>
+      <item>0.38267399959521176</item>
+      <item>3.0856172112310034</item>
+      <item>0.6361228573280049</item>
+      <item>4.402257901807918</item>
       <item>0.0</item>
    </arrayAmountPheromoneOnWay>
    <probabilitiTransitionInColony>
       <item>0.0</item>
-      <item>0.148679656126461</item>
-      <item>0.13445806826610393</item>
-      <item>0.4046608618256643</item>
-      <item>0.31220141378177074</item>
+      <item>0.03336408008644907</item>
+      <item>0.3002076494113509</item>
+      <item>0.09664494634559168</item>
+      <item>0.5697833241566082</item>
    </probabilitiTransitionInColony>
    <probabilitiTransitionInColony>
-      <item>0.06349342481972822</item>
+      <item>0.06437868990205788</item>
       <item>0.0</item>
-      <item>0.12174078259432003</item>
-      <item>0.23337793671319926</item>
-      <item>0.06086872680239407</item>
+      <item>0.3032700432424299</item>
+      <item>0.10975639162323735</item>
+      <item>0.15582143981875154</item>
    </probabilitiTransitionInColony>
    <probabilitiTransitionInColony>
-      <item>0.07627855598511116</item>
-      <item>0.05058104144177352</item>
+      <item>0.12069541868697363</item>
+      <item>0.08805076124561377</item>
       <item>0.0</item>
-      <item>0.16591148027047417</item>
-      <item>0.06949916294138613</item>
+      <item>0.04512590123514779</item>
+      <item>0.029456640606229156</item>
    </probabilitiTransitionInColony>
    <probabilitiTransitionInColony>
-      <item>0.04521797540559112</item>
-      <item>0.059462779223144406</item>
-      <item>0.02214965210772222</item>
+      <item>0.08307028250225172</item>
+      <item>0.10775183930999778</item>
+      <item>0.0828465100416002</item>
       <item>0.0</item>
-      <item>0.10533615294016598</item>
+      <item>0.03948917411919768</item>
    </probabilitiTransitionInColony>
    <probabilitiTransitionInColony>
-      <item>0.021046580397553857</item>
-      <item>0.11963209562122364</item>
-      <item>0.0664471218322009</item>
-      <item>0.06906210669916268</item>
+      <item>0.01489624612519501</item>
+      <item>0.10406577093127387</item>
+      <item>0.02475733116921372</item>
+      <item>0.13409383630537752</item>
       <item>0.0</item>
    </probabilitiTransitionInColony>
-   <maxCountEra>60000</maxCountEra>
+   <maxCountEra>3000</maxCountEra>
+   <countAnt>3</countAnt>
 </parameterAntOptimization>

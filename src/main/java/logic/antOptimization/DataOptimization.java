@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class DataOptimization {
 
     private int countColony;
-    private int countAntInOneColony;
     private int countAnts;
     private double lengthOptimaWay;
     private int maxCountEra;
@@ -19,8 +18,7 @@ public class DataOptimization {
 
     DataOptimization(ParameterAntOptimization param, AntColony ac) {
         this.countColony = ac.getCountColony();
-        this.countAntInOneColony = ac.getCountAntsInOneColony();
-        this.countAnts = countColony * countAntInOneColony;
+        this.countAnts = param.getCountAnt();
         this.lengthOptimaWay = 0;
         this.maxCountEra = param.getMaxCountEra() ;
         this.degreeInfluencePheromone =  param.getDegreeInfluencePheromone() ;
@@ -52,10 +50,6 @@ public class DataOptimization {
 
     public int getCountColony() {
         return countColony;
-    }
-
-    public int getCountAntInOneColony() {
-        return countAntInOneColony;
     }
 
     public int getCountAnts() {

@@ -17,11 +17,10 @@ public class AntAlgorithm {
         return dataOut;
     }
 
+
     private void inizializeAnts(ParameterAntOptimization antAlgoritmParam, AntColony ac, FactoryParameter fParam) {
-        for (int antsInOneColony = 0; antsInOneColony < ac.getCountAntsInOneColony(); antsInOneColony++){
-            for (int IndexFirstColonyInWay = 0; IndexFirstColonyInWay < ac.getCountColony(); IndexFirstColonyInWay++){
-                Ant.addAnt(new Ant(IndexFirstColonyInWay, antAlgoritmParam, ac, fParam));
-            }
+        for (int i = 0; i < antAlgoritmParam.getCountAnt(); i++){
+            Ant.addAnt( new Ant( (int) (Math.random() * ac.getCountColony()),  antAlgoritmParam, ac, fParam));
         }
     }
 
@@ -47,6 +46,9 @@ public class AntAlgorithm {
         long timeOptimization = date.getTime();
         int countAnt = Ant.getAntList().size();
 
+        inputData.addOptimaWay(currentOptimaWay);
+        inputData.addLengthOptimaWay(lengthWayCurrentOptima);
+
         do {
             parametrs.changePferomoneOnWay(ac);
             parametrs.changeProbabityTransitionInColony();
@@ -64,8 +66,6 @@ public class AntAlgorithm {
 
             lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
 
-            inputData.addOptimaWay(currentOptimaWay);
-            inputData.addLengthOptimaWay(lengthWayCurrentOptima);
 
             if (lengthWayOptima > lengthWayCurrentOptima) {
                 lengthWayOptima =  lengthWayCurrentOptima;
@@ -78,14 +78,17 @@ public class AntAlgorithm {
                 NotChangeMinWay++;
             }
 
-        } while ((++CurrentEra <= parametrs.getMaxCountEra())&(NotChangeMinWay < 5000));
+            inputData.addOptimaWay(optimaWay);
+            inputData.addLengthOptimaWay(lengthWayOptima);
+
+        } while ((++CurrentEra <= parametrs.getMaxCountEra())&(NotChangeMinWay < 1000));
 
         Date date2 = new Date();
         timeOptimization -= date2.getTime();
         System.out.println("Алгоритм работал:  " + (timeOptimization * (-1)) + " мс");
         System.out.println("Эпох пройдено : " + --CurrentEra);
-        if (5000 == NotChangeMinWay){
-            System.out.println("На протяжении 5000 эпох путь не улучшался, алгоритм закончен");
+        if (1000 == NotChangeMinWay){
+            System.out.println("На протяжении 1000 эпох путь не улучшался, алгоритм закончен");
         }
         else{
             System.out.println("Домтигнут лимит эпох, алгоритм закончен");

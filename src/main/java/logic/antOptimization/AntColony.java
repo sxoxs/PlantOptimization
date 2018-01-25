@@ -15,11 +15,10 @@ import java.io.InputStreamReader;
 public class AntColony {
 
     private int countColony;
-    private int countAntsInOneColony;
+
     private double[][] distanceBetweenColony;
 
     public void createAntColony(FactoryParameter fp) throws IOException {
-        assingValueVariableColonyFromConsole();
         this.countColony = fp.getProductCount();
 //        setDistanceBetweenColony();
         setDistansFromFactory(fp);
@@ -33,13 +32,7 @@ public class AntColony {
         this.countColony = countColony;
     }
 
-    public int getCountAntsInOneColony() {
-        return countAntsInOneColony;
-    }
 
-    public void setCountAntsInOneColony(int countAntsInOneColony) {
-        this.countAntsInOneColony = countAntsInOneColony;
-    }
 
     public double[][] getDistanceBetweenColony() {
         return distanceBetweenColony;
@@ -47,12 +40,6 @@ public class AntColony {
 
     public void setDistanceBetweenColony(double[][] distanceBetweenColony) {
         this.distanceBetweenColony = distanceBetweenColony;
-    }
-
-    private void assingValueVariableColonyFromConsole() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Введите количество муравьёв в каждом муравейнике");
-        countAntsInOneColony = Integer.parseInt(br.readLine().trim());
     }
 
     private void setDistanceBetweenColony() throws IOException {
@@ -71,7 +58,6 @@ public class AntColony {
                 break;
             }
         }
-
     }
 
     private void setCustomDistanceBetweenColony() throws IOException  {

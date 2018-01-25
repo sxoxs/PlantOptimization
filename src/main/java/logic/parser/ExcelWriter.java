@@ -97,7 +97,6 @@ public class ExcelWriter {
     public void saveConfig(DataOptimization outData, AntColony ac) throws IOException {
         createBook("Параметры алгоритма");
         writeValueParametersByName("Параметры алгоритма","Count colony", ac.getCountColony());
-        writeValueParametersByName("Параметры алгоритма","Count Ants In One colony", ac.getCountAntsInOneColony());
         writeValueParametersByName("Параметры алгоритма","Degree Influence Distance", outData.getDegreeInfluenceDistance());
         writeValueParametersByName("Параметры алгоритма","Degree Influence Pheromone", outData.getDegreeInfluencePheromone());
         writeValueParametersByName("Параметры алгоритма","Evaporation Pheromone", outData.getEvaporationPheromone());
