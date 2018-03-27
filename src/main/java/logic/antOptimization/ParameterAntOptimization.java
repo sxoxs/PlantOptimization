@@ -1,6 +1,6 @@
 package logic.antOptimization;
 
-import logic.factory.Schedule;
+
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,14 +33,10 @@ public class ParameterAntOptimization {
     private int countAnt;
 
 
-    ParameterAntOptimization(){
-
-    }
-
     public ParameterAntOptimization(AntColony ac) throws IOException {
         assingValueVariableFromConsole();
         assingLengthArray(ac);
-        averangDistant = (2 * AntMath.summArray(ac.getDistanceBetweenColony())) / (ac.getCountColony() * (ac.getCountColony() - 1));
+        averangDistant = (AntMath.summArray(ac.getDistanceBetweenColony())) / (ac.getCountColony() * (ac.getCountColony() - 1));
         firstCalculationArray(ac);
         changeProbabityTransitionInColony();
     }
@@ -148,9 +144,9 @@ public class ParameterAntOptimization {
 
         System.out.println("Введите количество муравьев: ");
         this.countAnt = Integer.parseInt(br.readLine().trim());
-        System.out.println("Введите коэфициент влияния феромона: ");
+        System.out.println("Введите степень влияния феромона: ");
         this.degreeInfluencePheromone = Double.parseDouble(br.readLine().trim());
-        System.out.println("Введите коэфициент влияния расстояния между муравейниками: ");
+        System.out.println("Введите степень влияния расстояния между муравейниками: ");
         this.degreeInfluenceDistance = Double.parseDouble(br.readLine().trim());
         System.out.println("Введите коэфициент учитывающий испарение феромона: ");
         this.evaporationPheromone = Double.parseDouble(br.readLine().trim());
@@ -159,12 +155,16 @@ public class ParameterAntOptimization {
     }
 
     public void changePferomoneOnWay(AntColony ac){
+        double summ = 0;
+        double temp = 0;
         for(int i = 0; i < this.arrayAmountPheromoneOnWay.length; i++) {
             for (int j = 0; j < this.arrayAmountPheromoneOnWay[i].length; j++) {
                 if (i!=j) {
-                    this.arrayAmountPheromoneOnWay[i][j] =
-                            (this.evaporationPheromone * this.arrayAmountPheromoneOnWay[i][j] + this.averangDistant *
-                                    (ac.getCountColony()-1) * (1 - this.evaporationPheromone) * calculationSummReciprocalLengthWayGivenColony(i, j));
+                    summ = calculationSummReciprocalLengthWayGivenColony(i, j);
+                    temp =  (this.evaporationPheromone * this.arrayAmountPheromoneOnWay[i][j]) + (this.averangDistant *
+                            (ac.getCountColony()-1) * (1 - this.evaporationPheromone) * summ);
+
+                    this.arrayAmountPheromoneOnWay[i][j] = temp;
                 }
             }
         }
@@ -172,8 +172,10 @@ public class ParameterAntOptimization {
 
     public void changeProbabityTransitionInColony() {
         double summTemp = 0;
+        double temp = 0;
 
         for (int i = 0; i < this.probabilitiTransitionInColony.length; i++) {
+            summTemp = 0;
             for (int k = 0; k < this.probabilitiTransitionInColony.length; k++){
                if (i != k) {
                     summTemp += (Math.pow(this.arrayAmountPheromoneOnWay[i][k], this.degreeInfluencePheromone)
@@ -182,10 +184,12 @@ public class ParameterAntOptimization {
             }
 
             for (int j = 0; j < this.probabilitiTransitionInColony[i].length; j++) {
-                this.probabilitiTransitionInColony[i][j] = (Math.pow(this.arrayAmountPheromoneOnWay[i][j], this.degreeInfluencePheromone)
-                        * Math.pow(this.arrayVisibilityColony[i][j], this.degreeInfluenceDistance));
+                if (i != j) {
+                    temp = (Math.pow(this.arrayAmountPheromoneOnWay[i][j], this.degreeInfluencePheromone)
+                            * Math.pow(this.arrayVisibilityColony[i][j], this.degreeInfluenceDistance));
 
-                this.probabilitiTransitionInColony[i][j] = this.probabilitiTransitionInColony[i][j] / summTemp;
+                    this.probabilitiTransitionInColony[i][j] = temp / summTemp;
+                }
             }
         }
     }
@@ -193,15 +197,11 @@ public class ParameterAntOptimization {
     private double calculationSummReciprocalLengthWayGivenColony(int indexFirstColony, int indexSecondColony) {
         double summReciprocalLength = 0;
 
-
         for (Ant ant : Ant.getAntList()) {
             if (isSequenceValuesInArray(ant.getAntWay(), indexFirstColony, indexSecondColony)) {
                 summReciprocalLength += 1 / ant.getLengthWay();
             }
         }
-
-
-
         return summReciprocalLength;
     }
 

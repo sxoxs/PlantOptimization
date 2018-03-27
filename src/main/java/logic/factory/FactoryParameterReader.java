@@ -13,7 +13,7 @@ public class FactoryParameterReader {
         er.setFileNameForLoad(fileName);
         String bookNameForLoad = "";
 
-        for (int apparat = 0; apparat < countApparat; apparat++){
+        for (int apparat = 1; apparat <= countApparat; apparat++){
             bookNameForLoad = "переналадка аппарата_" + apparat;
             changeoverList.add(er.readDoubleArray(bookNameForLoad));
         }

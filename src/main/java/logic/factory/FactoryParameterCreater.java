@@ -17,7 +17,7 @@ public class FactoryParameterCreater {
 
         ExcelReader er = new ExcelReader();
         er.setFileNameForLoad(fileNameForLoad);
-// TODO: 20/12/17 исправить нижнее
+// TODO: 20/12/17 исправить нижнее сделать перебор ячеек
         int countProduct = (int) er.readValue("параметры", 0,1);
         factoryParameter.setProductCount( countProduct );
 
@@ -43,7 +43,7 @@ public class FactoryParameterCreater {
         ew.setBorder("время выпуска", countProduct, countApparat);
         ew.createBook("маршрут выпуска");
         ew.setBorder("маршрут выпуска", countProduct, countApparat);
-        for (int j = 0; j < countApparat; j++){
+        for (int j = 1; j <= countApparat; j++){
             ew.createBook("переналадка аппарата_" + j);
             ew.setBorder("переналадка аппарата_" + j, countProduct, countProduct);
         }

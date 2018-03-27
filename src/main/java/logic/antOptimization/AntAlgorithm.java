@@ -1,6 +1,8 @@
 package logic.antOptimization;
 
 import logic.factory.FactoryParameter;
+import logic.factory.Schedule;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
@@ -49,23 +51,23 @@ public class AntAlgorithm {
         inputData.addOptimaWay(currentOptimaWay);
         inputData.addLengthOptimaWay(lengthWayCurrentOptima);
 
+        Schedule schedule = new Schedule();
+
         do {
             parametrs.changePferomoneOnWay(ac);
             parametrs.changeProbabityTransitionInColony();
 
             for (int ant = 0; ant < countAnt; ant++){
-                Ant.getAntList().get(ant).changeWay(parametrs, ac, fp);
+                Ant.getAntList().get(ant).changeWay(parametrs, fp, schedule);
             }
 
             indexOptimalAnt = Ant.getIngexMinimalLengthWay(Ant.getAntList());
 
             for (int i = 0; i < currentOptimaWay.length; i++){
                 currentOptimaWay[i] = Ant.getAntList().get(indexOptimalAnt).getAntWay()[i];
-
             }
 
             lengthWayCurrentOptima = Ant.getAntList().get(indexOptimalAnt).getLengthWay();
-
 
             if (lengthWayOptima > lengthWayCurrentOptima) {
                 lengthWayOptima =  lengthWayCurrentOptima;
@@ -77,18 +79,17 @@ public class AntAlgorithm {
             else {
                 NotChangeMinWay++;
             }
-
             inputData.addOptimaWay(optimaWay);
             inputData.addLengthOptimaWay(lengthWayOptima);
 
-        } while ((++CurrentEra <= parametrs.getMaxCountEra())&(NotChangeMinWay < 1000));
+        } while ((++CurrentEra <= parametrs.getMaxCountEra())&(NotChangeMinWay < 300000));
 
         Date date2 = new Date();
         timeOptimization -= date2.getTime();
         System.out.println("Алгоритм работал:  " + (timeOptimization * (-1)) + " мс");
         System.out.println("Эпох пройдено : " + --CurrentEra);
-        if (1000 == NotChangeMinWay){
-            System.out.println("На протяжении 1000 эпох путь не улучшался, алгоритм закончен");
+        if (200000 == NotChangeMinWay){
+            System.out.println("На протяжении 300000 эпох путь не улучшался, алгоритм закончен");
         }
         else{
             System.out.println("Домтигнут лимит эпох, алгоритм закончен");
@@ -106,7 +107,6 @@ public class AntAlgorithm {
         System.out.println();
         System.out.println("Лучший путь за все эпохи: ");
         System.out.println(Arrays.toString(dataOut.getOptimaWay()));
-
         System.out.print("Длина оптимального пути за все эпохи: ");
         System.out.println(dataOut.getLengthOptimaWay());
     }

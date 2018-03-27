@@ -1,16 +1,7 @@
 package logic.antOptimization;
 
 import logic.factory.FactoryParameter;
-import logic.factory.FactoryParameterCreater;
 import logic.factory.Schedule;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class AntColony {
 
@@ -18,9 +9,8 @@ public class AntColony {
 
     private double[][] distanceBetweenColony;
 
-    public void createAntColony(FactoryParameter fp) throws IOException {
+    public void createAntColony(FactoryParameter fp) {
         this.countColony = fp.getProductCount();
-//        setDistanceBetweenColony();
         setDistansFromFactory(fp);
     }
 
@@ -32,8 +22,6 @@ public class AntColony {
         this.countColony = countColony;
     }
 
-
-
     public double[][] getDistanceBetweenColony() {
         return distanceBetweenColony;
     }
@@ -42,59 +30,7 @@ public class AntColony {
         this.distanceBetweenColony = distanceBetweenColony;
     }
 
-    private void setDistanceBetweenColony() throws IOException {
-        System.out.println("Задать расстоянмя автоматически? Y/N ?");
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        switch (br.readLine().trim().toLowerCase()) {
-            case "y":
-            {
-                setAutoDistanceBetweenColony();
-                break;
-            }
-            case "n":
-            {
-                setCustomDistanceBetweenColony();
-                break;
-            }
-        }
-    }
-
-    private void setCustomDistanceBetweenColony() throws IOException  {
-        System.out.println("В ручном вводе");
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        this.distanceBetweenColony = new double[this.countColony][this.countColony];
-        for (int i = 0; i < this.countColony; i++) {
-            for (int j = 0; j < this.countColony; j++) {
-                if (i!=j) {
-                    {
-                        System.out.println("Введите расстояние между " + (i+1) + "-м и " + (j+1) + "-м муравейниками");
-                        this.distanceBetweenColony[i][j] = Double.parseDouble(br.readLine().trim());
-                    }
-                }
-                else {
-                    this.distanceBetweenColony[i][j] = 0;
-                }
-            }
-        }
-    }
-
-    private void setAutoDistanceBetweenColony() {
-        this.distanceBetweenColony = new double[this.countColony][this.countColony];
-        for (int i = 0; i < countColony; i++) {
-            for (int j = 0; j < countColony; j++) {
-                if (i!=j) {
-                    this.distanceBetweenColony[i][j] = 1 +  Math.random() * 100;          // AntMath.roundTo2Decimal(AntMath.randomDouble(99.0));
-                }
-                else {
-                    this.distanceBetweenColony[i][j] = 0;
-                }
-            }
-        }
-    }
-
-    private void setDistansFromFactory (FactoryParameter fp) throws IOException {
+    private void setDistansFromFactory (FactoryParameter fp) {
 
         Schedule schedule = new Schedule();
 

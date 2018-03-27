@@ -22,9 +22,15 @@ public class Schedule {
         int[] seqProduct = {firstProduct, secondProduct};
         inFactory.setSequenceProduct(seqProduct);
         getShedule(inFactory);
-        time = productTimeArray[1][1];
 
-        return time;
+        if (productTimeArray[1][1] > productTimeArray[0][1]) {
+            time = productTimeArray[1][1];
+        }
+        else {
+            time = productTimeArray[0][1];
+        }
+
+        return (time);
     }
 
     private void getShedule(FactoryParameter factory) {
@@ -38,7 +44,6 @@ public class Schedule {
         boolean isFirstApparat = true;
 
         for (int apparat = 0; apparat < factory.apparatCount; apparat++){
-            // TODO: 18/12/17 say yes 
             if (0 != (factory.getApparatScheduleArray()[nowProductIndex][apparat]) ){
                 if (isFirstApparat) {
                     nowApparatIndex = factory.getApparatScheduleArray()[nowProductIndex][apparat] - 1;

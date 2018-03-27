@@ -11,9 +11,6 @@ public class Ant {
     private int[] antWay;  //Set
     private double lengthWay;
 
-    Ant(ParameterAntOptimization param, AntColony ac, FactoryParameter fParam) {
-        new Ant( (int) (Math.random() * (ac.getCountColony() + 1)), param, ac, fParam);
-    }
 
     Ant(int firstColony, ParameterAntOptimization param, AntColony ac, FactoryParameter fParam) {
         antWay = new int[ac.getCountColony()];
@@ -21,8 +18,8 @@ public class Ant {
             antWay[j] = j;
         }
         swapValueInArrayWay(antWay.length-1, firstColony);
-        changeWay(param, ac, fParam);
-        changeLengthWay(fParam);
+        Schedule sch = new Schedule();
+        changeWay(param, fParam, sch);
     }
 
     public static void addAnt (Ant ant) {
@@ -41,40 +38,38 @@ public class Ant {
         return lengthWay;
     }
 
-    public void changeWay(ParameterAntOptimization algParam, AntColony ac, FactoryParameter fParam) {
+    public void changeWay(ParameterAntOptimization algParam, FactoryParameter fParam, Schedule schedule) {
         double probabilityTransitionAnt;
         int indexNextColony;
-        boolean condition;
         double summProbabiliry;
-        swapValueInArrayWay(0, antWay.length-1);
-        int indexNowColony = 1;
+        int indexNowColony = 0;
+        swapValueInArrayWay(indexNowColony, antWay.length-1);
 
-        do {
+        for (; indexNowColony < antWay.length-2; indexNowColony++) {
             double summArrayProbabilityTransitionAnt = 0;
 
             for (int j = indexNowColony + 1; j < antWay.length; j++){
                 summArrayProbabilityTransitionAnt +=  algParam.getProbabilitiTransitionInColony()[antWay[indexNowColony]][antWay[j]];
             }
 
-            probabilityTransitionAnt =  Math.random() ;
-            condition = false;
+            probabilityTransitionAnt =  Math.random() * summArrayProbabilityTransitionAnt;
             summProbabiliry = 0;
+            indexNextColony = indexNowColony+1;
 
-            for (indexNextColony = indexNowColony; !condition; ) {
-                indexNextColony++;
-                summProbabiliry +=  algParam.getProbabilitiTransitionInColony()[antWay[indexNowColony]][antWay[indexNextColony]]/summArrayProbabilityTransitionAnt;
+            for ( ; indexNextColony < antWay.length-1; indexNextColony++) {
+
+                summProbabiliry +=  algParam.getProbabilitiTransitionInColony()[antWay[indexNowColony]][antWay[indexNextColony]];
 
                 if (probabilityTransitionAnt < summProbabiliry) {
-                    condition = true;
+                    break;
                 }
             }
-
-            swapValueInArrayWay(indexNowColony, indexNextColony);
             indexNowColony++;
+            swapValueInArrayWay(indexNowColony, indexNextColony);
 
-        } while (indexNowColony < antWay.length-2);
+        }
 
-        changeLengthWay(fParam);
+        changeLengthWay(fParam, schedule);
     }
 
     private void swapValueInArrayWay(int firstIndex, int secondIndex) {
@@ -83,14 +78,9 @@ public class Ant {
         antWay[secondIndex] = antWayBuffer;
     }
 
-    private void changeLengthWay(FactoryParameter fp){
-        Schedule schedule = new Schedule();
+    private void changeLengthWay(FactoryParameter fp, Schedule schedule){
         fp.setSequenceProduct(this.antWay);
-
         this.lengthWay = schedule.calculationAllTime(fp);
-        if (this.lengthWay == 142) {
-            int i = 0;
-        }
     }
 
     public static int getIngexMinimalLengthWay(ArrayList<Ant> ants) {
