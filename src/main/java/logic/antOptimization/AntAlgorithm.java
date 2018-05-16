@@ -52,6 +52,7 @@ public class AntAlgorithm {
         inputData.addLengthOptimaWay(lengthWayCurrentOptima);
 
         Schedule schedule = new Schedule();
+        System.out.println(CurrentEra + " way: " + lengthWayOptima);
 
         do {
             parametrs.changePferomoneOnWay(ac);
@@ -75,6 +76,7 @@ public class AntAlgorithm {
                     optimaWay[i] = currentOptimaWay[i];
                     NotChangeMinWay = 0;
                 }
+                System.out.println(CurrentEra + " way: " + lengthWayOptima);
             }
             else {
                 NotChangeMinWay++;
@@ -82,7 +84,7 @@ public class AntAlgorithm {
             inputData.addOptimaWay(optimaWay);
             inputData.addLengthOptimaWay(lengthWayOptima);
 
-        } while ((++CurrentEra <= parametrs.getMaxCountEra())&(NotChangeMinWay < 300000));
+        } while (((++CurrentEra <= parametrs.getMaxCountEra())&(NotChangeMinWay < 3000000)));
 
         Date date2 = new Date();
         timeOptimization -= date2.getTime();
