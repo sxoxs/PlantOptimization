@@ -6,7 +6,6 @@ import logic.antOptimization.DataOptimization;
 import logic.antOptimization.ParameterAntOptimization;
 import logic.factory.FactoryParameter;
 import logic.factory.FactoryParameterCreater;
-import logic.factory.Schedule;
 import logic.parser.ExcelWriter;
 import logic.parser.XmlReader;
 import logic.parser.XmlWriter;
