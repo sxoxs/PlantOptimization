@@ -1,7 +1,7 @@
 package logic.main;
 
 
-import java.io.IOException;
+        import java.io.IOException;
 
 
 public class Main {
@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
 
-        System.out.println("Добро пожаловать в муравьиный алгоритм");
+        System.out.println("Добро пожаловать в программу оптимизации расписания работы оборудования");
 
         Menu menu = new Menu();
         menu.showMenu();

@@ -12,8 +12,8 @@ public class DataOptimization {
     private double degreeInfluenceDistance;
     private double evaporationPheromone;
     private int[] optimaWay;
-    private ArrayList<Double> lengthOptimaWayList = new ArrayList<>();
-    private ArrayList<int[]> optimaWayList = new ArrayList<>();
+    private ArrayList<Double> lengthOptimaWayList = new ArrayList<>(maxCountEra+10);
+    private ArrayList<int[]> optimaWayList = new ArrayList<>(maxCountEra+10);
     private long timeOptimization;
 
     DataOptimization(ParameterAntOptimization param, AntColony ac) {

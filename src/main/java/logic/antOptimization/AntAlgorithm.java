@@ -90,11 +90,11 @@ public class AntAlgorithm {
         timeOptimization -= date2.getTime();
         System.out.println("Алгоритм работал:  " + (timeOptimization * (-1)) + " мс");
         System.out.println("Эпох пройдено : " + --CurrentEra);
-        if (200000 == NotChangeMinWay){
+        if (20000 == NotChangeMinWay){
             System.out.println("На протяжении 300000 эпох путь не улучшался, алгоритм закончен");
         }
         else{
-            System.out.println("Домтигнут лимит эпох, алгоритм закончен");
+            System.out.println("Достигнут лимит эпох, алгоритм закончен");
         }
 
         inputData.setOptimaWay(optimaWay);

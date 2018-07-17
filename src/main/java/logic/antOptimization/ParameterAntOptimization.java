@@ -149,7 +149,7 @@ public class ParameterAntOptimization {
         this.degreeInfluencePheromone = Double.parseDouble(br.readLine().trim());
         System.out.println("Введите степень влияния расстояния между муравейниками: ");
         this.degreeInfluenceDistance = Double.parseDouble(br.readLine().trim());
-        System.out.println("Введите коэфициент учитывающий испарение феромона: ");
+        System.out.println("Введите коэффициент учитывающий испарение феромона: ");
         this.evaporationPheromone = Double.parseDouble(br.readLine().trim());
         System.out.println("Ведите количество эпох работы алгоритма");
         this.maxCountEra = Integer.parseInt(br.readLine().trim());

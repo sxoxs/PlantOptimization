@@ -21,8 +21,8 @@ public  class Menu {
     public void showMenu() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuffer sb = new StringBuffer("Выберите:\n");
-        sb.append("1. Создать Excel файл для последующеговвода данных;\n")
-                .append("2. Начать рассчёт, используя подготовленный Excel файл;\n")
+        sb.append("1. Создать Excel-файл для последующего ввода данных;\n")
+                .append("2. Начать расчёт, используя подготовленный Excel файл;\n")
                 .append("3. Выход.");
 
         String str = "";
